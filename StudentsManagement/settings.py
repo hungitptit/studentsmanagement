@@ -78,7 +78,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'quanlyhocsinhcohoa.wsgi.application'
+WSGI_APPLICATION = 'StudentsManagement.wsgi.application'
 
 
 # Database

@@ -1,1 +1,1 @@
-web: gunicorn quanlyhocsinhcohoa.wsgi
+web: gunicorn StudentsManagement.wsgi
