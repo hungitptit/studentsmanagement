@@ -171,7 +171,7 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': '2VSI_yxP6XcF2Sd08JdUhKr4eS4',
 }
 '''
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+#DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # https://cloudinary.com/console/c-2e02eaff27e1430877c2cd76f2c6cf
 # https://dashboard.heroku.com/apps/missingpeopleweb/deploy/github
