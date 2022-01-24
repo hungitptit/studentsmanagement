@@ -19,7 +19,7 @@ def add_student(request):
         one_student_form = AddOneStudentForm(request.POST, request.FILES)
         if (form.is_valid() ) :
             if form.cleaned_data['name']!='':
-                classid = Classes.objects.filter(id=form.cleaned_data['classid'])
+                classid = Class.objects.filter(id=form.cleaned_data['classid'])
                 student = Student()
                 #current_user= request.user
                 #studen.user=current_user
@@ -39,7 +39,7 @@ def add_student(request):
             
             try:
                 if request.FILES['myfile']:
-                    one_student_classid = Classes.objects.filter(id=one_student_form.cleaned_data['classid'])
+                    one_student_classid = Class.objects.filter(id=one_student_form.cleaned_data['classid'])
                     myfile = request.FILES['myfile']        
                     fs = FileSystemStorage()
                     filename = fs.save(myfile.name, myfile)
@@ -124,7 +124,7 @@ def signup(request):
 @login_required (login_url='/login')
 def get_classes(request):
     current_user= request.user
-    class_list = Classes.objects.filter(user=current_user)
+    class_list = Class.objects.filter(user=current_user)
     if class_list != None:
         return render(request, 'class_list.html', {'items': class_list, 'title':"Danh sách lớp học"})
     else:
@@ -133,7 +133,7 @@ def get_classes(request):
 @login_required (login_url='/login')
 def get_students(request):
     class_id=request.GET['class_id']
-    classid = Classes.objects.filter(id=class_id)
+    classid = Class.objects.filter(id=class_id)
     student_list = Student.objects.filter(classid=classid[0])
     #print(student_list[0].image)
     if student_list != None:
@@ -158,7 +158,7 @@ def scoring(request):
       
         try:
             if form.is_valid() and request.FILES['myfile']:
-                classid = Classes.objects.filter(id=form.cleaned_data['classid'])
+                classid = Class.objects.filter(id=form.cleaned_data['classid'])
                 testid = Test.objects.filter(id=form.cleaned_data['test'])
                 subject = Subject.objects.filter(id=form.cleaned_data['subject'])
                 myfile = request.FILES['myfile']        
@@ -210,7 +210,7 @@ def edit_student(request):
     # redirect to detail_view
     if request.method == "POST":
         if form.is_valid():
-            classid = Classes.objects.filter(id=form.cleaned_data['classid'])
+            classid = Class.objects.filter(id=form.cleaned_data['classid'])
             student = Student.objects.get(id=student_id)
             student.classid = classid[0]
             student.name = form.cleaned_data['name']

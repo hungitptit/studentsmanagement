@@ -11,7 +11,7 @@ GENDER_CHOICES = [
     ('Khác','Giới tính khác')]
 class AddStudentForm(forms.ModelForm):
     CLASS_CHOICES = []
-    classes = Classes.objects.all()
+    classes = Class.objects.all()
     for aclass in classes:
         CLASS_CHOICES.append((aclass.id,aclass.name))
     classid = forms.ChoiceField(
@@ -48,7 +48,7 @@ class AddStudentForm(forms.ModelForm):
         fields = ['name', 'gender', 'image', 'address', 'phone', 'description']
 class AddOneStudentForm(forms.Form):
     CLASS_CHOICES = []
-    classes = Classes.objects.all()
+    classes = Class.objects.all()
     for aclass in classes:
         CLASS_CHOICES.append((aclass.id,aclass.name))
     classid = forms.ChoiceField(
@@ -59,7 +59,7 @@ class AddOneStudentForm(forms.Form):
     )
 class UpdateStudentForm(forms.ModelForm):
     CLASS_CHOICES = []
-    classes = Classes.objects.all()
+    classes = Class.objects.all()
     for aclass in classes:
         CLASS_CHOICES.append((aclass.id,aclass.name))
     classid = forms.ChoiceField(
@@ -102,7 +102,7 @@ class ScoringForm(forms.Form):
     tests = Test.objects.all()
     for atest in tests:
         TEST_CHOICES.append((atest.id,atest.name))
-    classes = Classes.objects.all()
+    classes = Class.objects.all()
     for aclass in classes:
         CLASS_CHOICES.append((aclass.id,aclass.name))
     subjects = Subject.objects.all()

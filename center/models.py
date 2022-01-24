@@ -30,18 +30,18 @@ class UserProfile(models.Model):
         db_table = 'UserProfile'
 
 
-class Classes(models.Model):
+class Class(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='name', max_length=255, null=True, blank=True)
     user = models.ForeignKey(User,models.DO_NOTHING, db_column='UserID')
     class Meta:
          
-        db_table = 'Classes'
+        db_table = 'Class'
 
 
 class Student(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    classid = models.ForeignKey(Classes,models.DO_NOTHING, db_column='ClassID')
+    classid = models.ForeignKey(Class,models.DO_NOTHING, db_column='ClassID')
     address = models.CharField(blank=True, max_length=150, db_column='address')
     name = models.CharField(db_column='name', max_length=255, null=True, blank=True)
     gender= models.CharField (db_column='gender', max_length=100, null=True, blank=True)
