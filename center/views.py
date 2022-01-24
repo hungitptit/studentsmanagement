@@ -161,7 +161,12 @@ def scoring(request):
                 classid = Class.objects.filter(id=form.cleaned_data['classid'])
                 testid = Test.objects.filter(id=form.cleaned_data['test'])
                 subject = Subject.objects.filter(id=form.cleaned_data['subject'])
-                myfile = request.FILES['myfile']        
+                myfile = request.FILES['myfile']
+                #myfile.save('file'+myfile)
+                #excel = ExcelFile()       
+                #excel.file = myfile
+                #excel.save()
+                #print(myfile) 
                 fs = FileSystemStorage()
                 filename = fs.save(myfile.name, myfile)
                 uploaded_file_url = fs.url(filename)
