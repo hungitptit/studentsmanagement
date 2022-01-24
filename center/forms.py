@@ -11,9 +11,9 @@ GENDER_CHOICES = [
     ('Khác','Giới tính khác')]
 class AddStudentForm(forms.ModelForm):
     CLASS_CHOICES = []
-    #classes = Class.objects.all()
-    #for aclass in classes:
-    #    CLASS_CHOICES.append((aclass.id,aclass.name))
+    classes = Class.objects.all()
+    for aclass in classes:
+        CLASS_CHOICES.append((aclass.id,aclass.name))
     classid = forms.ChoiceField(
         label="Tên lớp",
         required=False,
@@ -48,9 +48,9 @@ class AddStudentForm(forms.ModelForm):
         fields = ['name', 'gender', 'image', 'address', 'phone', 'description']
 class AddOneStudentForm(forms.Form):
     CLASS_CHOICES = []
-    #classes = Class.objects.all()
-    #for aclass in classes:
-    #    CLASS_CHOICES.append((aclass.id,aclass.name))
+    classes = Class.objects.all()
+    for aclass in classes:
+        CLASS_CHOICES.append((aclass.id,aclass.name))
     classid = forms.ChoiceField(
         label="Tên lớp",
         required=False,
@@ -59,9 +59,9 @@ class AddOneStudentForm(forms.Form):
     )
 class UpdateStudentForm(forms.ModelForm):
     CLASS_CHOICES = []
-    #classes = Class.objects.all()
-    #for aclass in classes:
-    #    CLASS_CHOICES.append((aclass.id,aclass.name))
+    classes = Class.objects.all()
+    for aclass in classes:
+        CLASS_CHOICES.append((aclass.id,aclass.name))
     classid = forms.ChoiceField(
         label="Tên lớp",
         required=False,
@@ -99,15 +99,15 @@ class ScoringForm(forms.Form):
     CLASS_CHOICES = []
     TEST_CHOICES = []
     SUBJECT_CHOICES = []
-    #tests = Test.objects.all()
-    #for atest in tests:
-    #    TEST_CHOICES.append((atest.id,atest.name))
-    #classes = Class.objects.all()
-    #for aclass in classes:
-    #    CLASS_CHOICES.append((aclass.id,aclass.name))
-    #subjects = Subject.objects.all()
-    #for subject in subjects:
-     #   SUBJECT_CHOICES.append((subject.id,subject.name))
+    tests = Test.objects.all()
+    for atest in tests:
+        TEST_CHOICES.append((atest.id,atest.name))
+    classes = Class.objects.all()
+    for aclass in classes:
+        CLASS_CHOICES.append((aclass.id,aclass.name))
+    subjects = Subject.objects.all()
+    for subject in subjects:
+        SUBJECT_CHOICES.append((subject.id,subject.name))
     classid = forms.ChoiceField(
         label="Tên lớp",
         required=False,
