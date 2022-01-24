@@ -1,0 +1,87 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Login {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<body>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="excel-tab" data-bs-toggle="tab" data-bs-target="#excel" type="button" role="tab" aria-controls="excel" aria-selected="true">Nhập từ file excel</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="onestudent-tab" data-bs-toggle="tab" data-bs-target="#onestudent" type="button" role="tab" aria-controls="onestudent" aria-selected="false">Nhập thủ công</button>
+        </li>
+      </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="excel" role="tabpanel" aria-labelledby="excel-tab">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">
+                              Thêm học sinh
+                            </h4>
+                          </div>
+                        <div class="card-body">
+                            
+                            <form method = "post" enctype="multipart/form-data">
+                                <h5>Nhập từ file excel</h5>
+                            <input type="file" name="myfile" class="form-control">
+                                                             
+                                    <br/>
+                                    {% csrf_token %}
+                                    {{onestudentform.as_p}}
+                                    <button type="submit" class="btn btn-success" >Lưu danh sách</button>    
+                            </form>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    
+
+        <div class="tab-pane fade" id="onestudent" role="tabpanel" aria-labelledby="onestudent-tab">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">
+                              Thêm học sinh
+                            </h4>
+                          </div>
+                        <div class="card-body">
+                            
+                            <form method = "post" enctype="multipart/form-data">
+                                <h5>Nhập thủ công</h5>
+                                {% csrf_token %}
+                                {{form.as_p}}
+                        
+                                  
+                                  
+                                <button type="submit" name = 'upload' class="btn btn-success pull-left">Lưu</button>
+                            </form>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    
+    </div>
+   
+</body>
+<script>
+    $(function () {
+      $("#datetimepicker1").datetimepicker({
+        format: 'DD/MM/YYYY HH:mm',
+      });
+    });
+  </script>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

@@ -22,17 +22,18 @@ from django.urls.conf import include
 from center.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('upload', missing_image_view, name = 'upload'),
+    path('upload', add_student, name = 'upload'),
     path('success', success, name = 'success'),
     path('login/', login_form, name='login'),
     path('logout/', logout_func, name='logout'),
     path('signup/', signup, name='signup'),
-    path('missing/', missing_list, name="missing"),
-    path('', missing_list, name='home'),
-    path('missing_people', display_missing_people, name = 'missing_people'),
+    path('scoring', scoring, name='scoring'), 
+    path('', get_classes, name='home'), 
+    path('classes', get_classes, name='classes'),
+    path('students', get_students, name='students') ,
     path('accounts/', include('allauth.urls')),
-    path('missingdetail', missing_detail, name="productdetail"),
-    
+    path('studentdetail', show_student_detail, name='studentdetail'),
+    path('editstudent', edit_student, name='editstudent'),
 
 ]
 if settings.DEBUG:

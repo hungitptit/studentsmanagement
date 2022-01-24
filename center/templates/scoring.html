@@ -8,18 +8,24 @@
 {% block content %}
 <body>
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header card-header-primary">
                     <h4 class="card-title">
-                      Đăng tìm người lạc
+                      Nhập điểm
                     </h4>
                   </div>
                 <div class="card-body">
+                    
                     <form method = "post" enctype="multipart/form-data">
+                        <h5>Nhập từ file excel</h5>
+                    <input type="file" name="myfile" class="form-control">
+                                                     
+
+                  
                         {% csrf_token %}
                         {{form.as_p}}
-                        <button type="submit" name = 'upload' class="btn btn-primary pull-left">Đăng</button>
+                        <button type="submit" name = 'upload' class="btn btn-primary pull-left">Nhập điểm</button>
                     </form>
                     </div>
             </div>

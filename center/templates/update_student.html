@@ -1,0 +1,52 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Login {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<body>
+    
+    
+        
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">
+                              Sửa thông tin
+                            </h4>
+                          </div>
+                        <div class="card-body">
+                            
+                            <form method = "post" enctype="multipart/form-data">
+                                
+                                {% csrf_token %}
+                                {{form.as_p}}
+                        
+                                  
+                                  
+                                <button type="submit" value="Update" class="btn btn-success pull-left">Lưu</button>
+                            </form>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            
+      
+    
+   
+   
+</body>
+<script>
+    $(function () {
+      $("#datetimepicker1").datetimepicker({
+        format: 'DD/MM/YYYY HH:mm',
+      });
+    });
+  </script>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

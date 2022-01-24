@@ -4,64 +4,129 @@ from .models import *
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 ADDRESS_CHOICES = ['Thành phố Hà Nội', 'Tỉnh Hà Giang', 'Tỉnh Cao Bằng', 'Tỉnh Bắc Kạn']
-STATUS_CHOICES = [
-    ('0','Lưu nháp'), 
-    ('1','Đăng tìm')
-]
+
 GENDER_CHOICES = [
     ('Nam','Nam',), 
     ('Nữ','Nữ',), 
     ('Khác','Giới tính khác')]
-class MissingForm(forms.ModelForm):
-    name = forms.CharField(max_length=255, label="Tên")
+class AddStudentForm(forms.ModelForm):
+    CLASS_CHOICES = []
+    classes = Class.objects.all()
+    for aclass in classes:
+        CLASS_CHOICES.append((aclass.id,aclass.name))
+    classid = forms.ChoiceField(
+        label="Tên lớp",
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        choices=CLASS_CHOICES,
+    )
+    name = forms.CharField( required=False, max_length=255, label="Tên", widget=forms.TextInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'}))
     gender = forms.ChoiceField(
         label="Giới tính",
         required=False,
-        
+        widget=forms.Select(attrs={'class': 'form-control'}),
         choices=GENDER_CHOICES,
     )
-    description = forms.CharField(max_length=2550,widget=forms.Textarea, label="Mô tả")
-
-    status = forms.ChoiceField(
-        required=False,
-       
-        choices=STATUS_CHOICES,
+    image = forms.ImageField(  required=False, label="Ảnh chân dung",
+        widget=forms.FileInput(attrs={'style': 'width:100%;','class': 'form-control'})
     )
-    image = forms.ImageField( label="Ảnh chân dung")
-    class Meta:
-        model = MissingPeople
-        fields = ['name', 'image', 'gender', 'status']
+    
+    address = forms.CharField( required=False,max_length=2550, label="Địa chỉ", widget=forms.TextInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'}))
 
-class ReportForm(forms.ModelForm):
-    name = forms.CharField(max_length=255, label="Tên")
+    phone = forms.CharField( required=False, max_length=255, label="Số điện thoại", widget=forms.TextInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'}))
+    description = forms.CharField(required=False, max_length=2550,widget=forms.Textarea(attrs={'class': 'form-control'}), label="Mô tả")
+    dob = forms.DateTimeField(
+        required=False, 
+        label="Ngày sinh",
+        help_text= "Ví dụ: 1/1/1999",
+        input_formats=['%d/%m/%Y'],
+        widget=forms.DateTimeInput(attrs={'class': 'form-control datetimepicker-input','style': 'width:100%;','data-target': '#datetimepicker1'})
+    )
+    class Meta:
+        model = Student
+      
+        fields = ['name', 'gender', 'image', 'address', 'phone', 'description']
+class AddOneStudentForm(forms.Form):
+    CLASS_CHOICES = []
+    classes = Class.objects.all()
+    for aclass in classes:
+        CLASS_CHOICES.append((aclass.id,aclass.name))
+    classid = forms.ChoiceField(
+        label="Tên lớp",
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        choices=CLASS_CHOICES,
+    )
+class UpdateStudentForm(forms.ModelForm):
+    CLASS_CHOICES = []
+    classes = Class.objects.all()
+    for aclass in classes:
+        CLASS_CHOICES.append((aclass.id,aclass.name))
+    classid = forms.ChoiceField(
+        label="Tên lớp",
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        choices=CLASS_CHOICES,
+    )
+    name = forms.CharField( required=False, max_length=255, label="Tên", widget=forms.TextInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'}))
     gender = forms.ChoiceField(
+        label="Giới tính",
         required=False,
-        
+        widget=forms.Select(attrs={'class': 'form-control'}),
         choices=GENDER_CHOICES,
     )
-    description = forms.CharField(max_length=2550,widget=forms.Textarea)
-
-    status = forms.ChoiceField(
-        required=False,
-       
-        choices=STATUS_CHOICES,
+    image = forms.ImageField(  required=False, label="Ảnh chân dung",
+        widget=forms.FileInput(attrs={'style': 'width:100%;','class': 'form-control','name':'image'})
     )
-    image = models.ImageField()
+    
+    address = forms.CharField( required=False,max_length=2550, label="Địa chỉ", widget=forms.TextInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'}))
+
+    phone = forms.CharField( required=False, max_length=255, label="Số điện thoại", widget=forms.TextInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'}))
+    description = forms.CharField(required=False, max_length=2550,widget=forms.Textarea(attrs={'class': 'form-control'}), label="Mô tả")
+    dob = forms.DateTimeField(
+        required=False, 
+        label="Ngày sinh",
+        help_text= "Ví dụ: 1/1/1999",
+        input_formats=['%d/%m/%Y'],
+        widget=forms.DateTimeInput(attrs={'class': 'form-control datetimepicker-input','style': 'width:100%;','data-target': '#datetimepicker1'})
+    )
     class Meta:
-        model = MissingPeople
-        fields = ['name', 'image', 'gender', 'status']
+        model = Student
+      
+        fields = ['name', 'gender', 'image', 'address', 'phone', 'description','dob']
 
-
-class SignUpForm(UserCreationForm):
-    username = forms.CharField(max_length=30,label= 'User Name :')
-    email = forms.EmailField(max_length=200,label= 'Email :')
-    first_name = forms.CharField(max_length=100, help_text='First Name',label= 'First Name :')
-    last_name = forms.CharField(max_length=100, help_text='Last Name',label= 'First Name :')
-
-    class Meta:
-        model = User
-        fields = ('username', 'email','first_name','last_name', 'password1', 'password2', )
-
+class ScoringForm(forms.Form):
+    CLASS_CHOICES = []
+    TEST_CHOICES = []
+    SUBJECT_CHOICES = []
+    tests = Test.objects.all()
+    for atest in tests:
+        TEST_CHOICES.append((atest.id,atest.name))
+    classes = Class.objects.all()
+    for aclass in classes:
+        CLASS_CHOICES.append((aclass.id,aclass.name))
+    subjects = Subject.objects.all()
+    for subject in subjects:
+        SUBJECT_CHOICES.append((subject.id,subject.name))
+    classid = forms.ChoiceField(
+        label="Tên lớp",
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        choices=CLASS_CHOICES,
+    )
+    test = forms.ChoiceField(
+        label="Bài kiểm tra",
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        choices=TEST_CHOICES,
+    )
+    subject = forms.ChoiceField(
+        label="Môn học",
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        choices=SUBJECT_CHOICES,
+    )
+    
 class LoginForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(
@@ -104,27 +169,37 @@ class SignUpForm(UserCreationForm):
     first_name = forms.CharField(
        
          widget=forms.TextInput(
-            attrs={
-                              
+            attrs={              
                 "class": "form-control"
             }
         ))
-   
+    phone = forms.CharField(
+       
+         widget=forms.TextInput(
+            attrs={              
+                "class": "form-control"
+            }
+        ))
+    address = forms.CharField(
+       
+         widget=forms.TextInput(
+            attrs={              
+                "class": "form-control"
+            }
+        ))
     password1 = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={
-                    
+            attrs={ 
                 "class": "form-control"
             }
         ))
     password2 = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={
-                             
+            attrs={          
                 "class": "form-control"
             }
         ))
 
     class Meta:
         model = User
-        fields = ('username', 'email','first_name','last_name', 'password1', 'password2' )
+        fields = ('username', 'email','first_name','last_name', 'phone', 'address', 'password1', 'password2' )

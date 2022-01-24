@@ -1,0 +1,117 @@
+{% extends 'layouts/base.html' %}
+{% load static  
+{% block title %} Icons {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<!-- Header -->
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v11.0&appId=821058301783001&autoLogAppEvents=1" nonce="ernjqq4S"></script>
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt--7">
+
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="card shadow">
+                <div class="card-header bg-transparent">
+                    <div class="d-flex justify-content-between">
+                    <h3 class="mb-0">Thông tin chi tiết</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-5 item-photo">
+                            {% if student.image %}
+                            <img src="{{student.image.url}}" style="height: auto; width: 100%;"class="img-thumbnail" alt="">
+                            {% else %}
+                                <img style="height: 500px; width: auto;" src="/static/assets/img/student.png" class="img-thumbnail" alt="">
+                            {% endif %}
+                            
+                        </div>
+                        <div class="col-lg-7">
+                            <h2 id="product-name" style="font-weight: bold; color: navy;">{{ student.name }}</h1>
+                                <br>
+                                   
+                                    
+                                        <h4 style="font-weight: bold;">Giới tính: </h4> 
+                                        <div > 
+                                            <h4>{{student.gender}}</h4>
+                                        </div>
+                                    
+                                   
+                                        <h4 style="font-weight: bold;">Ngày sinh: </h4> 
+                                        <div > 
+                                            <h4>{{student.dob}}</h4>
+                                        </div>
+                                    
+                                    
+                                        <h4 style="font-weight: bold;">Địa chỉ: </h4> 
+                                        <div > 
+                                            <h4>{{student.address}}</h4>
+                                        </div>
+                                   
+                                 
+                                        <h4 style="font-weight: bold;">Số điện thoại: </h4> 
+                                        <div > 
+                                            <h4>{{student.phone}}</h4>
+                                        </div>
+                                    
+                                    
+                                        <h4 style="font-weight: bold;">Mô tả: </h4>
+                                        <div > 
+                                            <h4>{{student.description}}</h4>
+                                        </div>
+                                                                 
+                            <br>
+                            <div>
+                                <a href="/editstudent?student_id={{ student.id }}" class="btn btn-primary pull-right">Sửa thông tin</a>
+                                
+                            </div>
+                            
+                            <div  class="fb-share-button " data-width=""
+                                data-layout="button_count" data-size="large" 
+                                data-share="true">
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    
+
+                    
+                </div>
+            </div>
+
+            
+
+        </div>
+        <div class="col-lg-5">
+            <div class="card shadow">
+                <div class="card-header bg-transparent">
+                    <div class="d-flex justify-content-between">
+                    <h3 class="mb-0">Biểu đồ thế mạnh</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        
+                    
+                </div>
+            </div>
+
+        </div>
+        {% endblock content %}
+
+        <!-- Specific JS goes HERE -->
+        {% block javascripts %}{% endblock javascripts %}
+    </div>
+</div>
