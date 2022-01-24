@@ -71,7 +71,7 @@ class Test(models.Model):
 class Result(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     semester = models.CharField(db_column='semester', blank=True, max_length=255, null=True)
-    time = models.DateTimeField(db_column='time',blank=True, max_length=255, null=True)
+    time = models.DateTimeField(db_column='time',blank=True, max_length=255, null=True,auto_now_add=True)
     score = models.FloatField(db_column='score',blank=True, max_length=255, null=True)
     student = models.ForeignKey(Student,models.DO_NOTHING, db_column='StudentID')
     subject = models.ForeignKey(Subject,models.DO_NOTHING, db_column='SubjectID')
@@ -80,3 +80,7 @@ class Result(models.Model):
          
         db_table = 'Result'
 
+class Document(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True) 
+    #uploaded_at = models.DateTimeField(auto_now_add=True)
+    upload = models.FileField(upload_to='documents')

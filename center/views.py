@@ -10,6 +10,7 @@ import pandas as pd
 from django.core.files.storage import FileSystemStorage
 import datetime as dt
 import os
+import cloudinary
 # Create your views here.
 @login_required(login_url='/login') # Check login
 def add_student(request):
@@ -162,6 +163,7 @@ def scoring(request):
                 testid = Test.objects.filter(id=form.cleaned_data['test'])
                 subject = Subject.objects.filter(id=form.cleaned_data['subject'])
                 myfile = request.FILES['myfile']
+                
                 #myfile.save('file'+myfile)
                 #excel = ExcelFile()       
                 #excel.file = myfile
@@ -171,7 +173,8 @@ def scoring(request):
                 filename = fs.save(myfile.name, myfile)
                 uploaded_file_url = fs.url(filename)
                 excel_file = uploaded_file_url
-                #print(excel_file) 
+                print(excel_file) 
+                #cloudinary.uploader.upload("."+excel_file)
                 empexceldata = pd.read_excel("."+excel_file,names=['stt','name','score'])
                 #print(type(empexceldata))
                 dbframe = empexceldata
