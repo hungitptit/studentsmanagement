@@ -47,7 +47,7 @@ class AddStudentForm(forms.ModelForm):
       
         fields = ['name', 'gender', 'image', 'address', 'phone', 'description']
 class AddOneStudentForm(forms.Form):
-    #CLASS_CHOICES = []
+    CLASS_CHOICES = []
     #classes = Class.objects.all()
     #for aclass in classes:
     #    CLASS_CHOICES.append((aclass.id,aclass.name))
@@ -58,7 +58,7 @@ class AddOneStudentForm(forms.Form):
         choices=CLASS_CHOICES,
     )
 class UpdateStudentForm(forms.ModelForm):
-    #CLASS_CHOICES = []
+    CLASS_CHOICES = []
     #classes = Class.objects.all()
     #for aclass in classes:
     #    CLASS_CHOICES.append((aclass.id,aclass.name))
@@ -107,7 +107,7 @@ class ScoringForm(forms.Form):
     #    CLASS_CHOICES.append((aclass.id,aclass.name))
     #subjects = Subject.objects.all()
     #for subject in subjects:
-    #    SUBJECT_CHOICES.append((subject.id,subject.name))
+     #   SUBJECT_CHOICES.append((subject.id,subject.name))
     classid = forms.ChoiceField(
         label="Tên lớp",
         required=False,
