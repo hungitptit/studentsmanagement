@@ -49,6 +49,7 @@ def add_student(request):
                     
                     document.save()   
                     print(document.upload.url)
+                    messages.warning(request,"Lưu được document")
                     #fs = FileSystemStorage()
                     #filename = fs.save(myfile.name, myfile)
                     #uploaded_file_url = fs.url(filename)
@@ -58,6 +59,7 @@ def add_student(request):
                     dbframe = exceldata
                     #messages.success(str(exceldata))
                     #print(dbframe)
+                    messages.warning(request,"Đọc được file")
                     count = 0
                     for index,row in dbframe.iterrows():
                         
@@ -73,7 +75,7 @@ def add_student(request):
                     if(count>0):
                         messages.success(request,"Lưu thành công")
                     else:
-                         messages.warning(request,"Có lỗi xảy ra")
+                        messages.warning(request,"Có lỗi xảy ra")
             except Exception as identifier:            
                 print(identifier)
     else:
