@@ -56,10 +56,11 @@ def add_student(request):
                     #exceldata = pd.read_excel("."+excel_file,names=['stt','name','gender','address','phone','dob'], converters={'phone':str})
                     exceldata = pd.read_excel(document.upload.url,names=['stt','name','gender','address','phone','dob'], converters={'phone':str})
                     dbframe = exceldata
-                   
-                    print(dbframe)
+                    #messages.success(str(exceldata))
+                    #print(dbframe)
+                    count = 0
                     for index,row in dbframe.iterrows():
-                        messages.success(request,row['name'])
+                        
                         student = Student()
                         student.classid = one_student_classid[0]
                         student.name = row['name']
@@ -68,15 +69,18 @@ def add_student(request):
                         student.phone = row['phone']
                         student.dob = row['dob']
                         student.save()
+                        count +=1
+                    if(count>0):
+                        messages.success(request,"Lưu thành công")
+                    else:
+                         messages.warning(request,"Có lỗi xảy ra")
             except Exception as identifier:            
                 print(identifier)
     else:
         form = AddStudentForm()
         one_student_form = AddOneStudentForm()
     return render(request, 'add_student.html', {'form' : form, 'onestudentform':one_student_form})
-  
-def success(request):
-    return HttpResponse('successfully uploaded')
+
 
 def login_form(request):
     form = LoginForm(request.POST or None)

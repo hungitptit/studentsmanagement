@@ -23,7 +23,7 @@ from center.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('upload', add_student, name = 'upload'),
-    path('success', success, name = 'success'),
+    #path('success', success, name = 'success'),
     path('login/', login_form, name='login'),
     path('logout/', logout_func, name='logout'),
     path('signup/', signup, name='signup'),
