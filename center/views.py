@@ -56,9 +56,10 @@ def add_student(request):
                     #exceldata = pd.read_excel("."+excel_file,names=['stt','name','gender','address','phone','dob'], converters={'phone':str})
                     exceldata = pd.read_excel(document.upload.url,names=['stt','name','gender','address','phone','dob'], converters={'phone':str})
                     dbframe = exceldata
+                   
                     print(dbframe)
                     for index,row in dbframe.iterrows():
-
+                        messages.success(request,row['name'])
                         student = Student()
                         student.classid = one_student_classid[0]
                         student.name = row['name']
@@ -177,7 +178,7 @@ def scoring(request):
                 document.upload = myfile
                     
                 document.save()   
-                print(document.upload.url)
+                #print(document.upload.url)
            
                 exceldata = pd.read_excel(document.upload.url,names=['stt','name','score'])
                 dbframe = exceldata                
@@ -196,7 +197,7 @@ def scoring(request):
                     result.subject = subject[0]
                     result.testid = testid[0]
                     result.score = row['score']
-                    print(result.score)
+                    #print(result.score)
                     result.save()
             else:
                 form = ScoringForm()
