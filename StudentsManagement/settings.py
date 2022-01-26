@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import cloudinary
 import cloudinary_storage
+
 import django_heroku
 import gunicorn
 from pathlib import Path
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'cloudinary',
     'cloudinary_storage',
+    'gdstorage',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -164,7 +166,8 @@ SOCIALACCOUNT_FORMS = {
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 # For cloundinary, comment it if run on localhost
-
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE =  os.path.join(BASE_DIR ,'studentsmanagement-339316-d9dc99499435.json')
+#GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = 'ML' 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'viettel-vht',
     'API_KEY': '215537491342487',

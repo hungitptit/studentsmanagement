@@ -7,5 +7,5 @@ admin.site.register(Student)
 admin.site.register(Subject)
 admin.site.register(Test)
 admin.site.register(Result)
-#admin.site.register(ExcelFile)
+admin.site.register(Document)
 # Register your models here.

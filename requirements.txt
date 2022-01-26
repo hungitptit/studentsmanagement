@@ -16,3 +16,5 @@ Pillow
 cloudinary
 django-cloudinary-storage
 pandas
+django-googledrive-storage
+gdstorageallauth

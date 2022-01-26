@@ -10,7 +10,7 @@ from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
-
+from gdstorage.storage import GoogleDriveStorage
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(blank=True, max_length=20)
@@ -79,8 +79,11 @@ class Result(models.Model):
     class Meta:
          
         db_table = 'Result'
-
+gd_storage = GoogleDriveStorage()
 class Document(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True) 
     #uploaded_at = models.DateTimeField(auto_now_add=True)
-    upload = models.FileField(upload_to='documents')
+    upload = models.FileField(upload_to='ML',storage=gd_storage)
+    class Meta:
+         
+        db_table = 'Document'

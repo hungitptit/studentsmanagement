@@ -9,8 +9,10 @@ from django.contrib.auth.decorators import login_required
 import pandas as pd
 from django.core.files.storage import FileSystemStorage
 import datetime as dt
-import os
+#Simport os
 import cloudinary
+
+
 # Create your views here.
 @login_required(login_url='/login') # Check login
 def add_student(request):
@@ -26,7 +28,7 @@ def add_student(request):
                 #studen.user=current_user
                 student.classid = classid[0]
                 student.name = form.cleaned_data['name']
-                print (student.name)
+               
                 student.gender = form.cleaned_data['gender']
                 student.address = form.cleaned_data['address']
                 student.phone = form.cleaned_data['phone']
@@ -41,13 +43,20 @@ def add_student(request):
             try:
                 if request.FILES['myfile']:
                     one_student_classid = Class.objects.filter(id=one_student_form.cleaned_data['classid'])
-                    myfile = request.FILES['myfile']        
-                    fs = FileSystemStorage()
-                    filename = fs.save(myfile.name, myfile)
-                    uploaded_file_url = fs.url(filename)
-                    excel_file = uploaded_file_url
-                    empexceldata = pd.read_excel("."+excel_file,names=['stt','name','gender','address','phone','dob'], converters={'phone':str})
-                    dbframe = empexceldata
+                    myfile = request.FILES['myfile']   
+                    document = Document()  
+                    document.upload = myfile
+                    
+                    document.save()   
+                    print(document.upload.url)
+                    #fs = FileSystemStorage()
+                    #filename = fs.save(myfile.name, myfile)
+                    #uploaded_file_url = fs.url(filename)
+                    #excel_file = uploaded_file_url
+                    #exceldata = pd.read_excel("."+excel_file,names=['stt','name','gender','address','phone','dob'], converters={'phone':str})
+                    exceldata = pd.read_excel(document.upload.url,names=['stt','name','gender','address','phone','dob'], converters={'phone':str})
+                    dbframe = exceldata
+                    print(dbframe)
                     for index,row in dbframe.iterrows():
 
                         student = Student()
@@ -164,20 +173,16 @@ def scoring(request):
                 subject = Subject.objects.filter(id=form.cleaned_data['subject'])
                 myfile = request.FILES['myfile']
                 
-                #myfile.save('file'+myfile)
-                #excel = ExcelFile()       
-                #excel.file = myfile
-                #excel.save()
-                #print(myfile) 
-                fs = FileSystemStorage()
-                filename = fs.save(myfile.name, myfile)
-                uploaded_file_url = fs.url(filename)
-                excel_file = uploaded_file_url
-                print(excel_file) 
-                #cloudinary.uploader.upload("."+excel_file)
-                empexceldata = pd.read_excel("."+excel_file,names=['stt','name','score'])
+                document = Document()  
+                document.upload = myfile
+                    
+                document.save()   
+                print(document.upload.url)
+           
+                exceldata = pd.read_excel(document.upload.url,names=['stt','name','score'])
+                dbframe = exceldata                
                 #print(type(empexceldata))
-                dbframe = empexceldata
+                dbframe =exceldata
                 #print(dbframe['Họ và tên'])
                 
             
