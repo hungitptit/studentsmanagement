@@ -45,22 +45,21 @@ def add_student(request):
                 if request.FILES['myfile']:
                     one_student_classid = Class.objects.filter(id=one_student_form.cleaned_data['classid'])
                     myfile = request.FILES['myfile']   
-                    document = Document()  
-                    document.upload = myfile
+                    #document = Document()  
+                    #document.upload = myfile
                     
-                    document.save()   
-                    print(document.upload.url)
-                    messages.warning(request,document.upload.url)
-                    #fs = FileSystemStorage()
-                    #filename = fs.save(myfile.name, myfile)
-                    #uploaded_file_url = fs.url(filename)
-                    #excel_file = uploaded_file_url
-                    #exceldata = pd.read_excel("."+excel_file,names=['stt','name','gender','address','phone','dob'], converters={'phone':str})
-                    exceldata = pd.read_excel(document.upload.url,names=['stt','name','gender','address','phone','dob'], converters={'phone':str})
+                    #document.save()   
+                    #print(document.upload.url)
+                    #messages.warning(request,document.upload.url)
+                    fs = FileSystemStorage()
+                    filename = fs.save(myfile.name, myfile)
+                    uploaded_file_url = fs.url(filename)
+                    excel_file = uploaded_file_url
+                    exceldata = pd.read_excel("."+excel_file,names=['stt','name','gender','address','phone','dob'], converters={'phone':str})
+                    #exceldata = pd.read_excel(document.upload.url,names=['stt','name','gender','address','phone','dob'], converters={'phone':str})
                     dbframe = exceldata
                     #messages.success(str(exceldata))
                     #print(dbframe)
-                    messages.warning(request,"ok")
                     count = 0
                     for index,row in dbframe.iterrows():
                         
