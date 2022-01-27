@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, request
+from matplotlib.style import context
 from .forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -60,7 +61,7 @@ def add_student(request):
                     dbframe = exceldata
                     #messages.success(str(exceldata))
                     #print(dbframe)
-                    count = 0
+                    
                     for index,row in dbframe.iterrows():
                         
                         student = Student()
@@ -71,11 +72,10 @@ def add_student(request):
                         student.phone = row['phone']
                         student.dob = row['dob']
                         student.save()
-                        count +=1
-                    if(count>0):
-                        messages.success(request,"Lưu thành công")
-                    else:
-                        messages.warning(request,"Có lỗi xảy ra")
+                        
+                
+                    messages.success(request,"Lưu thành công")
+                    
             
     else:
         form = AddStudentForm()
@@ -160,9 +160,32 @@ def get_students(request):
 
 def show_student_detail(request):
     student_id=request.GET['student_id']
-    student = Student.objects.filter(id=student_id)
+    student = Student.objects.get(id=student_id)
+    subjects = Subject.objects.all()
+    
+    labels = []
+    average_score = []
+    for subject in subjects:
+        labels.append(subject.name)
+        subject_results = Result.objects.filter(student=student,subject=subject)
+        total = 0
+        lenght = 0
+        average = 0
+        for result in subject_results:
+            total += result.score*result.testid.weight
+            lenght += result.testid.weight
+        if (lenght>0):
+            average = total/lenght
+        average_score.append(average)
+    context = {
+        'student': student, 
+        'title':"Danh sách học sinh",
+        'labels':labels,
+        'average_score':average_score
+        }
+    print(labels)
     if student != None:
-        return render(request, 'student_detail.html', {'student': student[0], 'title':"Danh sách học sinh"})
+        return render(request, 'student_detail.html', context=context)
     else:
         return render(request, 'student_list.html', {'student': []})
 
@@ -170,7 +193,6 @@ def show_student_detail(request):
 def scoring(request):
     form = ScoringForm(request.POST, request.FILES)  
     if request.method == 'POST':
-        
       
         try:
             if form.is_valid() and request.FILES['myfile']:
@@ -179,14 +201,11 @@ def scoring(request):
                 subject = Subject.objects.filter(id=form.cleaned_data['subject'])
                 myfile = request.FILES['myfile']
                 
-                document = Document()  
-                document.upload = myfile
-                    
-                document.save()   
-                #print(document.upload.url)
-           
-                exceldata = pd.read_excel(document.upload.url,names=['stt','name','score'])
-                dbframe = exceldata                
+                fs = FileSystemStorage()
+                filename = fs.save(myfile.name, myfile)
+                uploaded_file_url = fs.url(filename)
+                excel_file = uploaded_file_url
+                exceldata = pd.read_excel("."+excel_file,names=['stt','name','score'], converters={'phone':str})
                 #print(type(empexceldata))
                 dbframe =exceldata
                 #print(dbframe['Họ và tên'])
@@ -196,7 +215,7 @@ def scoring(request):
                     #print(row['score'])
                     
                     student = Student.objects.filter(name=row['name'],classid=classid[0])
-                    print(len(student))
+                    #print(len(student))
                     result = Result()
                     result.student = student[0]
                     result.subject = subject[0]
@@ -204,6 +223,7 @@ def scoring(request):
                     result.score = row['score']
                     #print(result.score)
                     result.save()
+                messages.success(request,"Lưu thành công")
             else:
                 form = ScoringForm()
         except Exception as identifier:            

@@ -16,7 +16,13 @@
                     </h4>
                   </div>
                 <div class="card-body">
-                    
+                    {% if messages %}
+                          {% for message in messages %}
+                              <div class="alert alert-{{message.tags}}" role="alert">
+                                  {{ message }}
+                              </div>
+                          {% endfor %}
+                      {% endif %}
                     <form method = "post" enctype="multipart/form-data">
                         <h5>Nhập từ file excel</h5>
                     <input type="file" name="myfile" class="form-control">
