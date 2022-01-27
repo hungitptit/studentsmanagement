@@ -170,6 +170,7 @@
     };
     var colorNames = Object.keys(window.chartColors);
     
+  
     </script>
 <!-- Header -->
 <div id="fb-root"></div>
@@ -283,11 +284,50 @@
             </div>
 
         </div>
-        {% endblock content %}
+      
 
-        <!-- Specific JS goes HERE -->
-        {% block javascripts %}
+    
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="card shadow" style="height: 100%;">
+                <div class="card-header bg-transparent">
+                    <div class="d-flex justify-content-between">
+                    <h3 class="mb-0">Biểu đồ phân bố điểm</h3>
+                    </div>
+                </div>
+                
+            </div>
 
-        {% endblock javascripts %}
+            
+
+        </div>
+        <div class="col-lg-7">
+            <div class="card shadow" style="height: 100%;">
+                <div class="card-header bg-transparent">
+                    <div class="d-flex justify-content-between">
+                    <h3 class="mb-0">Biểu đồ điểm các bài kiểm tra</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                       
+                        <div id="linechart" style="height: 100%;" >
+                            <canvas id="canvas"></canvas>
+                          </div>
+                     
+                    </div>    
+                    
+                </div>
+            </div>
+
+        </div>
+        
     </div>
 </div>
+{% endblock content %}
+        <!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+{% endblock javascripts %}
