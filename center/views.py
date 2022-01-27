@@ -11,6 +11,7 @@ from django.core.files.storage import FileSystemStorage
 import datetime as dt
 #Simport os
 import cloudinary
+import json
 
 
 # Create your views here.
@@ -40,7 +41,7 @@ def add_student(request):
                 #return redirect('success')
         if one_student_form.is_valid():
             
-            try:
+            
                 if request.FILES['myfile']:
                     one_student_classid = Class.objects.filter(id=one_student_form.cleaned_data['classid'])
                     myfile = request.FILES['myfile']   
@@ -76,8 +77,7 @@ def add_student(request):
                         messages.success(request,"Lưu thành công")
                     else:
                         messages.warning(request,"Có lỗi xảy ra")
-            except Exception as identifier:            
-                print(identifier)
+            
     else:
         form = AddStudentForm()
         one_student_form = AddOneStudentForm()
