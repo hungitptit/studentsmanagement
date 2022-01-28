@@ -1,4 +1,5 @@
 from os import name
+from turtle import color
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect
@@ -11,7 +12,7 @@ import pandas as pd
 from django.core.files.storage import FileSystemStorage
 import datetime as dt
 #Simport os
-import cloudinary
+
 import json
 
 
@@ -165,25 +166,46 @@ def show_student_detail(request):
     
     labels = []
     average_score = []
+    line_dataset =[]
+    color = ['rgb(255, 99, 132)','rgb(54, 162, 235)','rgb(255, 159, 64)','rgb(75, 192, 192)','rgb(153, 102, 255)','rgb(255, 205, 86)','rgb(231,233,237)']
+    i = 0
+    max = 0
     for subject in subjects:
+        line_dataMap = {}
         labels.append(subject.name)
         subject_results = Result.objects.filter(student=student,subject=subject)
         total = 0
         lenght = 0
         average = 0
+        score_array = []
         for result in subject_results:
+            score_array.append(result.score)
             total += result.score*result.testid.weight
             lenght += result.testid.weight
         if (lenght>0):
             average = total/lenght
         average_score.append(average)
+        line_dataMap["label"] = subject.name
+        line_dataMap["data"] = score_array
+        line_dataMap["backgroundColor"]= color[i]
+        line_dataMap["borderColor"]=color[i]
+        line_dataMap["fill"]=0
+        if (i>3):
+            line_dataMap["hidden"]=1
+        #line_dataMap["fill"]=json.dumps(False)
+        i+=1
+        #line_dataMap["fill"]="false"
+        #line_dataMap[""]
+        line_dataset.append(line_dataMap)
+    #print(line_dataset)
     context = {
         'student': student, 
         'title':"Danh sách học sinh",
         'labels':labels,
-        'average_score':average_score
+        'average_score':average_score,
+        'dataset':line_dataset
         }
-    print(labels)
+    
     if student != None:
         return render(request, 'student_detail.html', context=context)
     else:

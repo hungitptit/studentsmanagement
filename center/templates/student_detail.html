@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static  
-{% block title %} Icons {% endblock title %}
+{% block title %} Thông tin học sinh {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -13,7 +13,11 @@
     -webkit-user-select: none;
     -ms-user-select: none;
     margin: 0 auto;
+    
+    
     }
+    
+  
     #chartjs-tooltip {
       opacity: 1;
       position: absolute;
@@ -37,6 +41,15 @@
       width: 10px;
       height: 10px;
       margin-right: 10px;
+    }
+    h1{
+    font-family: Roboto;
+    color: #fff;
+    margin-top:50px;
+    font-weight:200;
+    text-align: center;
+    display: block;
+    text-decoration: none;
     }
     </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
@@ -91,6 +104,7 @@
         },
         scale: {
           ticks: {
+            max: 10,
             beginAtZero: true
           },
           pointLabels: {
@@ -165,31 +179,182 @@
         }
       }
     };
-    window.onload = function() {
-      window.myRadar = new Chart(document.getElementById("canvas"), config);
-    };
+   
     var colorNames = Object.keys(window.chartColors);
+    var lineChartData = {}
     
+    var data = {
+      /*
+        "datasets": [
+        {
+            "backgroundColor": "rgb(156, 39, 176)",
+            "borderColor": "rgb(156, 39, 176)",
+            "fill": false,
+            "data": [
+            10,
+            8,
+            7,
+            9
+            ],
+            "id": "amount",
+            "label": "Hình học",
+                    "yAxisID":"left"
+        },
+        {
+            "backgroundColor": "rgb(39, 176, 200)",
+            "borderColor": "rgb(39, 176, 200)",
+            "fill": false,
+            "data": [
+            10,
+            9,
+            8,
+            5,
+            8
+            ],
+            "id": "amount",
+            "label": "Đại số",
+                    "yAxisID":"left"
+
+        },
+        {
+            "backgroundColor": window.chartColors.red,
+            "borderColor": window.chartColors.red,
+            "fill": false,
+            "data": [
+            8,
+            9,
+            7,
+            10
+            ],
+            "id": "amount",
+            "label": "Giải tích",
+                    "yAxisID":"left",
+            hidden:true
+
+        }
+        ],
+        "labels": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+        ]
+        */
+      datasets:{{dataset|safe}},
+      //console.log({{dataset|safe}}),
+      "labels": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+        ]
+    };
+    
+    var options = {
+      
+        "elements": {
+        "rectangle": {
+            "borderWidth": 2
+        }
+        },
+        "layout": {
+        "padding": 0
+        },
+        "legend": {
+        "display": true,
+        "labels": {
+            "boxWidth": 16
+        }
+        },
+        "maintainAspectRatio": false,
+        "responsive": true,
+        "scales": {
+        "xAxes": [
+            {
+            "gridLines": {
+                "display": false
+            },
+            "scaleLabel": {
+                "display": true,
+                "labelString": "Thứ tự bài kiểm tra"
+            },
+            "stacked": false,
+            "ticks": {
+                "autoSkip": true,
+                "beginAtZero": true
+            },
+            //"time": {
+            //    "tooltipFormat": "[Q]Q - YYYY",
+            //    "unit": "quarter"
+            //},
+            //"type": "string"
+            }
+        ],
+        "yAxes": [
+            {
+            "scaleLabel": {
+                "display": true,
+                "labelString": "Điểm"
+            },
+                        "id": "left",
+            "stacked": false,
+            "ticks": {
+                "beginAtZero": true
+            }
+            },
+            /*
+            {
+            "scaleLabel": {
+                "display": false,
+                "labelString": "Purchase count"
+            },
+                        "id": "right",
+                        "position": "right",
+            "stacked": false,
+            "ticks": {
+                "beginAtZero": true
+            }
+            }
+            */
+        ]
+        },
+        "title": {
+        "display": false
+        },
+        "tooltips": {
+        "intersect": false,
+        "mode": "index",
+        "position": "nearest",
+        "callbacks": {}
+        }
+    }
+    var type = "line";
+    window.onload = function() {
+        window.myRadar = new Chart(document.getElementById("canvas"), config);
+        window.myChart = new Chart(document.getElementById("lineChart").getContext('2d'), {options, data, type});
+    };
+//var myChart = new Chart(document.getElementById("myChart").getContext('2d'), {options, data, type});
+
   
     </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+
 <!-- Header -->
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v11.0&appId=821058301783001&autoLogAppEvents=1" nonce="ernjqq4S"></script>
-<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
-    <div class="container-fluid">
-        <div class="header-body">
-        </div>
-    </div>
-</div>
+
 
 <div class="container-fluid mt--7">
 
     <div class="row">
+       
         <div class="col-lg-7">
             <div class="card shadow" style="height: 100%;">
                 <div class="card-header bg-transparent">
                     <div class="d-flex justify-content-between">
-                    <h3 class="mb-0">Thông tin chi tiết</h3>
+                    <h3 class="mb-0" style="font-weight: bold;">Thông tin cá nhân</h3>
                     </div>
                 </div>
                 <div class="card-body">
@@ -264,11 +429,12 @@
             
 
         </div>
+        
         <div class="col-lg-5">
             <div class="card shadow" style="height: 100%;">
                 <div class="card-header bg-transparent">
                     <div class="d-flex justify-content-between">
-                    <h3 class="mb-0">Biểu đồ thế mạnh</h3>
+                    <h3 class="mb-0" style="font-weight: bold;">Biểu đồ thế mạnh</h3>
                     </div>
                 </div>
                 <div class="card-body">
@@ -290,11 +456,12 @@
     </div>
     <br>
     <div class="row">
+        
         <div class="col-lg-5">
             <div class="card shadow" style="height: 100%;">
                 <div class="card-header bg-transparent">
                     <div class="d-flex justify-content-between">
-                    <h3 class="mb-0">Biểu đồ phân bố điểm</h3>
+                    <h3 class="mb-0" style="font-weight: bold;">Biểu đồ phân bố điểm</h3>
                     </div>
                 </div>
                 
@@ -303,19 +470,21 @@
             
 
         </div>
+        
         <div class="col-lg-7">
             <div class="card shadow" style="height: 100%;">
                 <div class="card-header bg-transparent">
                     <div class="d-flex justify-content-between">
-                    <h3 class="mb-0">Biểu đồ điểm các bài kiểm tra</h3>
+                    <h3 class="mb-0" style="font-weight: bold;">Biểu đồ quá trình tiến bộ</h3>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
                        
-                        <div id="linechart" style="height: 100%;" >
-                            <canvas id="canvas"></canvas>
-                          </div>
+                        
+                        <div class="wrapper" style="height: 300px; width: 100%;">
+                        <canvas id="lineChart"></canvas>
+                        </div>
                      
                     </div>    
                     

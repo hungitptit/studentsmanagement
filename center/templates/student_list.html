@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} Missing {% endblock title %}
+{% block title %} Danh sách học sinh {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -8,12 +8,12 @@
 {% block content %}
 
 <!-- Header -->
-<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+<!--div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
         </div>
     </div>
-</div>
+</div-->
 {% if messages %}
 {% for message in messages %}
     <div class="alert alert-{{message.tags}}" role="alert">
@@ -32,7 +32,7 @@
                 <div class="card-body">
                     
                     <div class="row">
-
+                        
                         {% for item in items %}
                         <div class="col-md-3 border px-3 py-3" style="cursor: pointer;">
                             
