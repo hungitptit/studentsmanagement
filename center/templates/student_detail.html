@@ -6,7 +6,576 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 
+<style>
+  #canvas-holder {
+    width: 100%;
+    margin-top: 50px;
+    text-align: center;
+  }
+
+    canvas {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    margin: 0 auto;
+    
+    
+    }
+    
+    #chartjs-tooltip {
+      opacity: 1;
+      position: absolute;
+      background: rgba(0, 0, 0, .7);
+      color: white;
+      border-radius: 3px;
+      -webkit-transition: all .1s ease;
+      transition: all .1s ease;
+      pointer-events: none;
+      -webkit-transform: translate(-50%, 0);
+      transform: translate(-50%, 0);
+    }
+    
+    #chartjs-radar{
+      width : 100%;
+      height: 100%;
+    }
+    
+    .chartjs-tooltip-key {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 10px;
+    }
+    
+    </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<script>
+    // Radar chart
+    window.chartColors = {
+      red: 'rgb(255, 99, 132)',
+      orange: 'rgb(255, 159, 64)',
+      yellow: 'rgb(255, 205, 86)',
+      green: 'rgb(75, 192, 192)',
+      blue: 'rgb(54, 162, 235)',
+      purple: 'rgb(153, 102, 255)',
+      grey: 'rgb(231,233,237)'
+    };
+    
+    window.randomScalingFactor = function() {
+      return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
+    }
+    
+    var randomScalingFactor = function() {
+      return Math.round(Math.random() * 100);
+    };
+    
+    
+    var label1 ="Điểm trung bình";
+    
+    var color = Chart.helpers.color;
+    var config = {
+      type: 'radar',
+      data: {
+        labels: {{labels|safe}},
+        datasets: [{
+          label: label1,
+          backgroundColor: color(window.chartColors.blue).alpha(0.2).rgbString(),
+          borderColor: window.chartColors.blue,
+          pointBackgroundColor: window.chartColors.blue,
+          data: {{average_score}},
+          notes: [],
+        },  ]
+      },
+      options: {
+        layout: {
+            padding: 20
+        },
+        legend: {
+          position: 'bottom',
+        },
+        title: {
+          display: true,
+          //text: 'Chart.js Outcome Graph'
+        },
+        scale: {
+          ticks: {
+            max: 10,
+            beginAtZero: true
+          },
+          pointLabels: {
+            fontSize: 20
+          },
+        },
+        
+        tooltips:{
+          enabled:false,
+          callbacks:{
+            label: function(tooltipItem, data){
+              var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
+              //This will be the tooltip.body
+              return datasetLabel + ': ' + tooltipItem.yLabel ;
+            }
+          },
+          custom: function(tooltip){
+            // Tooltip Element
+          var tooltipEl = document.getElementById('chartjs-tooltip');
+          if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'chartjs-tooltip';
+            tooltipEl.innerHTML = "<table></table>"
+            document.body.appendChild(tooltipEl);
+          }
+          // Hide if no tooltip
+          if (tooltip.opacity === 0) {
+            tooltipEl.style.opacity = 0;
+            return;
+          }
+          // Set caret Position
+          tooltipEl.classList.remove('above', 'below', 'no-transform');
+          if (tooltip.yAlign) {
+            tooltipEl.classList.add(tooltip.yAlign);
+          } else {
+            tooltipEl.classList.add('no-transform');
+          }
+          function getBody(bodyItem) {
+            return bodyItem.lines;
+          }
+          // Set Text
+          if (tooltip.body) {
+            var titleLines = tooltip.title || [];
+            var bodyLines = tooltip.body.map(getBody);
+            var innerHtml = '<thead>';
+            titleLines.forEach(function(title) {
+              innerHtml += '<tr><th>' + title + '</th></tr>';
+            });
+            innerHtml += '</thead><tbody>';
+            bodyLines.forEach(function(body, i) {
+              var colors = tooltip.labelColors[i];
+              var style = 'background:' + colors.backgroundColor;
+              style += '; border-color:' + colors.borderColor;
+              style += '; border-width: 2px';
+              var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
+              innerHtml += '<tr><td>' + span + body + '</td></tr>';
+            });
+            innerHtml += '</tbody>';
+            var tableRoot = tooltipEl.querySelector('table');
+            tableRoot.innerHTML = innerHtml;
+          }
+          var position = this._chart.canvas.getBoundingClientRect();
+          // Display, position, and set styles for font
+          tooltipEl.style.opacity = 1;
+          tooltipEl.style.left = position.left + tooltip.caretX + 'px';
+          tooltipEl.style.top = position.top + tooltip.caretY + 'px';
+          tooltipEl.style.fontFamily = tooltip._fontFamily;
+          tooltipEl.style.fontSize = tooltip.fontSize;
+          tooltipEl.style.fontStyle = tooltip._fontStyle;
+          tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+          }
+        }
+      }
+    };
+   
+    var colorNames = Object.keys(window.chartColors);
+    
+    // Line chart
+    var data = {
+      /*
+        "datasets": [
+        {
+            "backgroundColor": "rgb(156, 39, 176)",
+            "borderColor": "rgb(156, 39, 176)",
+            "fill": false,
+            "data": [
+            10,
+            8,
+            7,
+            9
+            ],
+            "id": "amount",
+            "label": "Hình học",
+                    "yAxisID":"left"
+        },
+        {
+            "backgroundColor": "rgb(39, 176, 200)",
+            "borderColor": "rgb(39, 176, 200)",
+            "fill": false,
+            "data": [
+            10,
+            9,
+            8,
+            5,
+            8
+            ],
+            "id": "amount",
+            "label": "Đại số",
+                    "yAxisID":"left"
+
+        },
+        {
+            "backgroundColor": window.chartColors.red,
+            "borderColor": window.chartColors.red,
+            "fill": false,
+            "data": [
+            8,
+            9,
+            7,
+            10
+            ],
+            "id": "amount",
+            "label": "Giải tích",
+                    "yAxisID":"left",
+            hidden:true
+
+        }
+        ],
+        "labels": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+        ]
+        */
+      datasets:{{dataset|safe}},
+      //console.log({{dataset|safe}}),
+      labels: {{lineLabels}}
+    };
+    
+    var options = {
+      
+        elements: {
+        rectangle: {
+            "borderWidth": 2
+        }
+        },
+        layout: {
+          "padding": 0
+        },
+        legend: {
+          posistion:'bottom',
+          display: true,
+          labels: {
+              "boxWidth": 16
+          }
+        },
+        maintainAspectRatio: false,
+        responsive: true,
+        scales: {
+        xAxes: [
+            {
+            gridLines: {
+                display: false
+            },
+            scaleLabel: {
+                display: true,
+                labelString: "Thứ tự bài kiểm tra"
+            },
+            stacked: false,
+            ticks: {
+                autoSkip: true,
+                beginAtZero: true
+            },
+            //"time": {
+            //    "tooltipFormat": "[Q]Q - YYYY",
+            //    "unit": "quarter"
+            //},
+            //"type": "string"
+            }
+        ],
+        yAxes: [
+            {
+            scaleLabel: {
+                display: true,
+                labelString: "Điểm"
+            },
+            id: "left",
+            stacked: false,
+            ticks: {
+                beginAtZero: true
+            }
+            },
+            /*
+            {
+            "scaleLabel": {
+                "display": false,
+                "labelString": "Purchase count"
+            },
+                        "id": "right",
+                        "position": "right",
+            "stacked": false,
+            "ticks": {
+                "beginAtZero": true
+            }
+            }
+            */
+        ]
+        },
+        title: {
+          display: false
+        },
+        tooltips: {
+          intersect: false,
+          mode: "index",
+          position: "nearest",
+          callbacks: {}
+        }
+    }
+    var type = "line";
+     
+    // Doughnut chart
+
+    Chart.defaults.global.tooltips.custom = function(tooltip) {
+    // Tooltip Element
+    var tooltipEl = document.getElementById('doughnut-tooltip');
+
+    // Hide if no tooltip
+    if (tooltip.opacity === 0) {
+      tooltipEl.style.opacity = 0;
+      return;
+    }
+
+    // Set Text
+    if (tooltip.body) {
+      var total = 0;
+
+      // get the value of the datapoint
+      var value = this._data.datasets[tooltip.dataPoints[0].datasetIndex].data[tooltip.dataPoints[0].index].toLocaleString();
+
+      // calculate value of all datapoints
+    this._data.datasets[tooltip.dataPoints[0].datasetIndex].data.forEach(function(e) {
+        total += e;
+      });
+
+      // calculate percentage and set tooltip value
+      tooltipEl.innerHTML = '<h1>' + (value / total * 100) + '%</h1>';
+    }
+
+    // calculate position of tooltip
+    var centerX = (this._chartInstance.chartArea.left + this._chartInstance.chartArea.right) / 2;
+    var centerY = ((this._chartInstance.chartArea.top + this._chartInstance.chartArea.bottom) / 2);
+
+    // Display, position, and set styles for font
+    tooltipEl.style.opacity = 1;
+    tooltipEl.style.left = centerX + 'px';
+    tooltipEl.style.top = centerY + 'px';
+    tooltipEl.style.fontFamily = tooltip._fontFamily;
+    tooltipEl.style.fontSize = tooltip.fontSize;
+    tooltipEl.style.fontStyle = tooltip._fontStyle;
+    tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+  };
+
+  var doughnutConfig = {
+    type: 'doughnut',
+    data: {
+      datasets: [{
+        data: {{doughnut_data}},
+        backgroundColor: [
+          window.chartColors.green,
+          window.chartColors.yellow,
+          window.chartColors.red,
+          
+        ],
+      }],
+      labels: [
+        "Điểm từ 9 đến 10",
+        "Điểm từ 7 đến nhỏ hơn 9",
+        "Điểm nhỏ hơn 7",
+        
+      ]
+    },
+    options: {
+      responsive: true,
+      legend: {
+        position: 'bottom',
+        display: true,
+        labels: {
+          padding: 20
+        },
+      },
+      tooltips: {
+        enabled: true,
+      }
+    }
+  };
+
+
+    window.onload = function() {
+        window.myRadar = new Chart(document.getElementById("canvas"), config);
+        window.myChart = new Chart(document.getElementById("lineChart").getContext('2d'), {options, data, type});
+        var ctx = document.getElementById("chart-area").getContext("2d");
+        window.myPie = new Chart(ctx, doughnutConfig);
+    };
+//var myChart = new Chart(document.getElementById("myChart").getContext('2d'), {options, data, type});
+
+  
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+
+
+<!-- Header -->
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v11.0&appId=821058301783001&autoLogAppEvents=1" nonce="ernjqq4S"></script>
+
+
+<div class="container-fluid mt--7">
+
+    <div class="row">
+       
+        <div class="col-lg-7">
+            <div class="card shadow" style="height: 100%;">
+                <div class="card-header bg-transparent">
+                    <div class="d-flex justify-content-between">
+                    <h3 class="mb-0" style="font-weight: bold;">Thông tin cá nhân</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-5 item-photo">
+                            {% if student.image %}
+                            <img src="{{student.image.url}}" style="height: auto; width: 100%;"class="img-thumbnail" alt="">
+                            {% else %}
+                                <img style="height: auto; width: 100%;" src="/static/assets/img/student.png" class="img-thumbnail" alt="">
+                            {% endif %}
+                            
+                        </div>
+                        <div class="col-lg-7">
+                            <h2 id="product-name" style="font-weight: bold; color: navy;">{{ student.name }}</h1>
+                                <br>
+                                   
+                                    
+                                        <h4 style="font-weight: bold;">Giới tính: </h4> 
+                                        <div > 
+                                            <h4>{{student.gender}}</h4>
+                                        </div>
+                                    
+                                   
+                                        <h4 style="font-weight: bold;">Ngày sinh: </h4> 
+                                        <div > 
+                                            <h4>{{student.dob}}</h4>
+                                        </div>
+                                    
+                                    
+                                        <h4 style="font-weight: bold;">Địa chỉ: </h4> 
+                                        <div > 
+                                            <h4>{{student.address}}</h4>
+                                        </div>
+                                   
+                                 
+                                        <h4 style="font-weight: bold;">Số điện thoại: </h4> 
+                                        <div > 
+                                            <h4>{{student.phone}}</h4>
+                                        </div>
+                                    
+                                    
+                                        <h4 style="font-weight: bold;">Mô tả: </h4>
+                                        <div > 
+                                            <h4>{{student.description}}</h4>
+                                        </div>
+                                                                 
+                            <br>
+                            
+                            <div class="row">
+                                <div  class="fb-share-button pull-left" data-width=""
+                                    data-layout="button_count" data-size="large" 
+                                    data-share="true">
+                                </div>
+                            </div>
+                           
+                            
+                            <div class="row">
+                                <div>
+                                <a href="/editstudent?student_id={{ student.id }}" class="btn btn-primary pull-left">Sửa thông tin</a>
+                                
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+
+                    
+                </div>
+            </div>
+
+            
+
+        </div>
+        
+        <div class="col-lg-5">
+            <div class="card shadow" style="height: 100%;">
+                <div class="card-header bg-transparent">
+                    <div class="d-flex justify-content-between">
+                    <h3 class="mb-0" style="font-weight: bold;">Biểu đồ thế mạnh</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                       
+                        <div id="chartjs-radar" style="height: auto; width: 100%;">
+                            <canvas id="canvas"></canvas>
+                          </div>
+                     
+                    </div>    
+                    
+                </div>
+            </div>
+
+        </div>
+      
+
+    
+    </div>
+    <br>
+    <div class="row">
+        
+        <div class="col-lg-4">
+            <div class="card shadow" style="height: 100%;">
+                <div class="card-header bg-transparent">
+                    <div class="d-flex justify-content-between">
+                    <h3 class="mb-0" style="font-weight: bold;">Biểu đồ phân bố điểm</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                      <div class="wrapper" style="height: auto; width: 100%;">
+                        <div >
+                          <canvas id="chart-area"></canvas>
+                        </div>
+                        
+                        <div id="doughnut-tooltip"></div>
+                      </div>
+                  </div>    
+                  
+              </div>    
+            </div>
+
+        </div>
+        
+        <div class="col-lg-8">
+            <div class="card shadow" style="height: 100%;">
+                <div class="card-header bg-transparent">
+                    <div class="d-flex justify-content-between">
+                    <h3 class="mb-0" style="font-weight: bold;">Biểu đồ quá trình tiến bộ</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="wrapper" style="height: 400px; width: 100%;">
+                        <canvas id="lineChart"></canvas>
+                        </div>
+                     
+                    </div>    
+                    
+                </div>
+            </div>
+
+        </div>
+        
+    </div>
+</div>
 {% endblock content %}
         <!-- Specific JS goes HERE -->
 {% block javascripts %}

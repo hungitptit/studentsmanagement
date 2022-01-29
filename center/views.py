@@ -1,5 +1,5 @@
 from os import name
-from turtle import color
+#from turtle import color
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect
