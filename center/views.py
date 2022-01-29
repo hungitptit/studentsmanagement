@@ -19,10 +19,13 @@ import json
 # Create your views here.
 @login_required(login_url='/login') # Check login
 def add_student(request):
-  
+    CLASS_CHOICES = []
+    classes = Class.objects.all()
+    for aclass in classes:
+        CLASS_CHOICES.append((aclass.id,aclass.name))  
     if request.method == 'POST':
-        form = AddStudentForm(request.POST, request.FILES)
-        one_student_form = AddOneStudentForm(request.POST, request.FILES)
+        form = AddStudentForm(request.POST, request.FILES, CLASS_CHOICES=CLASS_CHOICES)
+        one_student_form = AddOneStudentForm(request.POST, request.FILES, CLASS_CHOICES=CLASS_CHOICES)
         if (one_student_form.is_valid() ) :
             if one_student_form.cleaned_data['name']!='':
                 classid = Class.objects.filter(id=one_student_form.cleaned_data['classid'])
@@ -42,7 +45,6 @@ def add_student(request):
                 #form.save()
                 #return redirect('success')
         if form.is_valid():
-            
             
                 if request.FILES['myfile']:
                     one_student_classid = Class.objects.filter(id=form.cleaned_data['classid'])
@@ -79,8 +81,8 @@ def add_student(request):
                     
             
     else:
-        form = AddStudentForm()
-        one_student_form = AddOneStudentForm()
+        form = AddStudentForm(CLASS_CHOICES=CLASS_CHOICES)
+        one_student_form = AddOneStudentForm(CLASS_CHOICES=CLASS_CHOICES)
     return render(request, 'add_student.html', {'form' : form, 'onestudentform':one_student_form})
 
 

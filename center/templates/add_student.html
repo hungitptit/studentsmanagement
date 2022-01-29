@@ -39,7 +39,7 @@
                                                              
                                     <br/>
                                     {% csrf_token %}
-                                    {{onestudentform.as_p}}
+                                    {{form.as_p}}
                                     <button type="submit" class="btn btn-success" >Lưu danh sách</button>    
                             </form>
                             </div>
@@ -64,7 +64,7 @@
                             <form method = "post" enctype="multipart/form-data">
                                 <h5>Nhập thủ công</h5>
                                 {% csrf_token %}
-                                {{form.as_p}}
+                                {{onestudentform.as_p}}
                         
                                   
                                   

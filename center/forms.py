@@ -10,16 +10,16 @@ GENDER_CHOICES = [
     ('Nữ','Nữ',), 
     ('Khác','Giới tính khác')]
 class AddOneStudentForm(forms.ModelForm):
-    CLASS_CHOICES = []
-    classes = Class.objects.all()
-    for aclass in classes:
-        CLASS_CHOICES.append((aclass.id,aclass.name))
-    classid = forms.ChoiceField(
-        label="Tên lớp",
-        required=False,
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        choices=CLASS_CHOICES,
-    )
+    def __init__(self, *args, **kwargs):
+        CLASS_CHOICES = kwargs.pop('CLASS_CHOICES', None)
+        super(AddOneStudentForm, self).__init__(*args, **kwargs)
+        self.fields['classid']=forms.ChoiceField(
+            label="Tên lớp",
+            required=False,
+            widget=forms.Select(attrs={'class': 'form-control'}),
+            choices=CLASS_CHOICES,
+        )
+    classid =forms.ChoiceField() 
     name = forms.CharField( required=False, max_length=255, label="Tên", widget=forms.TextInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'}))
     gender = forms.ChoiceField(
         label="Giới tính",
@@ -47,20 +47,20 @@ class AddOneStudentForm(forms.ModelForm):
       
         fields = ['name', 'gender', 'image', 'address', 'phone', 'description']
 class AddStudentForm(forms.Form):
-    def __init__(self, round_list, *args, **kwargs):
-        super(AddOneStudentForm, self).__init__(*args, **kwargs)
-        self.fields['name'] = forms.ChoiceField(choices=tuple([(name, name) for name in round_list]))
+    def __init__(self, *args, **kwargs):
+        CLASS_CHOICES = kwargs.pop('CLASS_CHOICES', None)
+        super(AddStudentForm, self).__init__(*args, **kwargs)
+        self.fields['classid']=forms.ChoiceField(
+            label="Tên lớp",
+            required=False,
+            widget=forms.Select(attrs={'class': 'form-control'}),
+            choices=CLASS_CHOICES,
+        )
+    classid =forms.ChoiceField()   
     
-    CLASS_CHOICES = []
-    classes = Class.objects.all()
-    for aclass in classes:
-        CLASS_CHOICES.append((aclass.id,aclass.name))
-    classid = forms.ChoiceField(
-        label="Tên lớp",
-        required=False,
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        choices=CLASS_CHOICES,
-    )
+         
+    
+    
 class UpdateStudentForm(forms.ModelForm):
     CLASS_CHOICES = []
     classes = Class.objects.all()
