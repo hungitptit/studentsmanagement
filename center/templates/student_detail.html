@@ -405,8 +405,8 @@
     window.onload = function() {
         window.myRadar = new Chart(document.getElementById("canvas"), config);
         window.myChart = new Chart(document.getElementById("lineChart").getContext('2d'), {options, data, type});
-        //var ctx = document.getElementById("chart-area").getContext("2d");
-        //window.myPie = new Chart(ctx, doughnutConfig);
+        var ctx = document.getElementById("chart-area").getContext("2d");
+        window.myPie = new Chart(ctx, doughnutConfig);
     };
 //var myChart = new Chart(document.getElementById("myChart").getContext('2d'), {options, data, type});
 
@@ -540,13 +540,13 @@
                 </div>
                 <div class="card-body">
                   <div class="row">
-                      <!--div class="wrapper" style="height: auto; width: 100%;">
+                      <div class="wrapper" style="height: auto; width: 100%;">
                         <div >
                           <canvas id="chart-area"></canvas>
                         </div>
                         
                         <div id="doughnut-tooltip"></div>
-                      </div-->
+                      </div>
                   </div>    
                   
               </div>    

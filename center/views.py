@@ -5,8 +5,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, request
 #from matplotlib.style import context
-import matplotlib
-matplotlib.use('Agg')
+
 from .forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -160,7 +159,7 @@ def get_students(request):
     else:
         return render(request, 'student_list.html', {'items': []})
 
-
+'''''
 def show_student_detail(request):
     student_id=request.GET['student_id']
     student = Student.objects.get(id=student_id)
@@ -232,7 +231,7 @@ def show_student_detail(request):
         return render(request, 'student_detail.html', context=context)
     else:
         return render(request, 'student_list.html', {'student': []})
-
+'''
 @login_required (login_url='/login')
 def scoring(request):
     form = ScoringForm(request.POST, request.FILES)  
