@@ -9,7 +9,7 @@ GENDER_CHOICES = [
     ('Nam','Nam',), 
     ('Nữ','Nữ',), 
     ('Khác','Giới tính khác')]
-class AddStudentForm(forms.ModelForm):
+class AddOneStudentForm(forms.ModelForm):
     CLASS_CHOICES = []
     classes = Class.objects.all()
     for aclass in classes:
@@ -46,7 +46,11 @@ class AddStudentForm(forms.ModelForm):
         model = Student
       
         fields = ['name', 'gender', 'image', 'address', 'phone', 'description']
-class AddOneStudentForm(forms.Form):
+class AddStudentForm(forms.Form):
+    def __init__(self, round_list, *args, **kwargs):
+        super(AddOneStudentForm, self).__init__(*args, **kwargs)
+        self.fields['name'] = forms.ChoiceField(choices=tuple([(name, name) for name in round_list]))
+    
     CLASS_CHOICES = []
     classes = Class.objects.all()
     for aclass in classes:

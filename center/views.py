@@ -23,29 +23,29 @@ def add_student(request):
     if request.method == 'POST':
         form = AddStudentForm(request.POST, request.FILES)
         one_student_form = AddOneStudentForm(request.POST, request.FILES)
-        if (form.is_valid() ) :
-            if form.cleaned_data['name']!='':
-                classid = Class.objects.filter(id=form.cleaned_data['classid'])
+        if (one_student_form.is_valid() ) :
+            if one_student_form.cleaned_data['name']!='':
+                classid = Class.objects.filter(id=one_student_form.cleaned_data['classid'])
                 student = Student()
                 #current_user= request.user
                 #studen.user=current_user
                 student.classid = classid[0]
-                student.name = form.cleaned_data['name']
+                student.name = one_student_form.cleaned_data['name']
                
-                student.gender = form.cleaned_data['gender']
-                student.address = form.cleaned_data['address']
-                student.phone = form.cleaned_data['phone']
-                student.dob = form.cleaned_data['dob']
-                student.image =form.cleaned_data['image']
+                student.gender = one_student_form.cleaned_data['gender']
+                student.address = one_student_form.cleaned_data['address']
+                student.phone = one_student_form.cleaned_data['phone']
+                student.dob = one_student_form.cleaned_data['dob']
+                student.image =one_student_form.cleaned_data['image']
                 student.save()
                 #data.save()
                 #form.save()
                 #return redirect('success')
-        if one_student_form.is_valid():
+        if form.is_valid():
             
             
                 if request.FILES['myfile']:
-                    one_student_classid = Class.objects.filter(id=one_student_form.cleaned_data['classid'])
+                    one_student_classid = Class.objects.filter(id=form.cleaned_data['classid'])
                     myfile = request.FILES['myfile']   
                     #document = Document()  
                     #document.upload = myfile
