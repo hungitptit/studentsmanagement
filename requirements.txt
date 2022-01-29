@@ -19,3 +19,4 @@ pandas
 django-googledrive-storage
 openpyxl
 matplotlib
+python3-tk
