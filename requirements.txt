@@ -18,4 +18,3 @@ django-cloudinary-storage
 pandas
 django-googledrive-storage
 openpyxl
-tk
