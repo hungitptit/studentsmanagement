@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'StudentsManagement.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR / 'studentmanagement.sqlite3'),
+        'NAME': str(BASE_DIR / 'studentsmanagement.sqlite3'),
     }
 }
 

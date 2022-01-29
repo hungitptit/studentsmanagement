@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, request
 #from matplotlib.style import context
-
 from .forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
