@@ -169,7 +169,11 @@ def show_student_detail(request):
     line_dataset =[]
     color = ['rgb(255, 99, 132)','rgb(54, 162, 235)','rgb(255, 159, 64)','rgb(75, 192, 192)','rgb(153, 102, 255)','rgb(255, 205, 86)','rgb(231,233,237)']
     i = 0
+    line_labels = []
     max = 0
+    good_score = 0
+    standard_score = 0
+    bad_score = 0
     for subject in subjects:
         line_dataMap = {}
         labels.append(subject.name)
@@ -178,22 +182,36 @@ def show_student_detail(request):
         lenght = 0
         average = 0
         score_array = []
+        count = 0
         for result in subject_results:
             score_array.append(result.score)
             total += result.score*result.testid.weight
             lenght += result.testid.weight
+            count +=1
+            if(count > max):
+                max = count
+                line_labels.append(max)
+            if(result.score >= 9):
+                good_score += 1
+            if (7<=result.score <9):
+                standard_score += 1
+            if (result.score <7):
+                bad_score +=1
+
         if (lenght>0):
             average = total/lenght
         average_score.append(average)
         line_dataMap["label"] = subject.name
         line_dataMap["data"] = score_array
         line_dataMap["backgroundColor"]= color[i]
-        line_dataMap["borderColor"]=color[i]
+        line_dataMap["borderColor"]=color[i%len(color)]
         line_dataMap["fill"]=0
         if (i>3):
             line_dataMap["hidden"]=1
+        
         #line_dataMap["fill"]=json.dumps(False)
         i+=1
+        
         #line_dataMap["fill"]="false"
         #line_dataMap[""]
         line_dataset.append(line_dataMap)
@@ -203,7 +221,9 @@ def show_student_detail(request):
         'title':"Danh sách học sinh",
         'labels':labels,
         'average_score':average_score,
-        'dataset':line_dataset
+        'dataset':line_dataset,
+        'lineLabels':line_labels,
+        'doughnut_data': [good_score,standard_score,bad_score]
         }
     
     if student != None:

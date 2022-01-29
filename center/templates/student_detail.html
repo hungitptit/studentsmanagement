@@ -6,7 +6,14 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+
 <style>
+  #canvas-holder {
+    width: 100%;
+    margin-top: 50px;
+    text-align: center;
+  }
 
     canvas {
     -moz-user-select: none;
@@ -17,7 +24,6 @@
     
     }
     
-  
     #chartjs-tooltip {
       opacity: 1;
       position: absolute;
@@ -42,20 +48,12 @@
       height: 10px;
       margin-right: 10px;
     }
-    h1{
-    font-family: Roboto;
-    color: #fff;
-    margin-top:50px;
-    font-weight:200;
-    text-align: center;
-    display: block;
-    text-decoration: none;
-    }
+    
     </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
 <script>
-    
+    // Radar chart
     window.chartColors = {
       red: 'rgb(255, 99, 132)',
       orange: 'rgb(255, 159, 64)',
@@ -118,7 +116,7 @@
             label: function(tooltipItem, data){
               var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
               //This will be the tooltip.body
-              return datasetLabel + ': ' + tooltipItem.yLabel +': '+ data.datasets[tooltipItem.datasetIndex].notes[tooltipItem.index];
+              return datasetLabel + ': ' + tooltipItem.yLabel ;
             }
           },
           custom: function(tooltip){
@@ -181,8 +179,8 @@
     };
    
     var colorNames = Object.keys(window.chartColors);
-    var lineChartData = {}
     
+    // Line chart
     var data = {
       /*
         "datasets": [
@@ -243,47 +241,42 @@
         */
       datasets:{{dataset|safe}},
       //console.log({{dataset|safe}}),
-      "labels": [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5"
-        ]
+      labels: {{lineLabels}}
     };
     
     var options = {
       
-        "elements": {
-        "rectangle": {
+        elements: {
+        rectangle: {
             "borderWidth": 2
         }
         },
-        "layout": {
-        "padding": 0
+        layout: {
+          "padding": 0
         },
-        "legend": {
-        "display": true,
-        "labels": {
-            "boxWidth": 16
-        }
+        legend: {
+          posistion:'bottom',
+          display: true,
+          labels: {
+              "boxWidth": 16
+          }
         },
-        "maintainAspectRatio": false,
-        "responsive": true,
-        "scales": {
-        "xAxes": [
+        maintainAspectRatio: false,
+        responsive: true,
+        scales: {
+        xAxes: [
             {
-            "gridLines": {
-                "display": false
+            gridLines: {
+                display: false
             },
-            "scaleLabel": {
-                "display": true,
-                "labelString": "Thứ tự bài kiểm tra"
+            scaleLabel: {
+                display: true,
+                labelString: "Thứ tự bài kiểm tra"
             },
-            "stacked": false,
-            "ticks": {
-                "autoSkip": true,
-                "beginAtZero": true
+            stacked: false,
+            ticks: {
+                autoSkip: true,
+                beginAtZero: true
             },
             //"time": {
             //    "tooltipFormat": "[Q]Q - YYYY",
@@ -292,16 +285,16 @@
             //"type": "string"
             }
         ],
-        "yAxes": [
+        yAxes: [
             {
-            "scaleLabel": {
-                "display": true,
-                "labelString": "Điểm"
+            scaleLabel: {
+                display: true,
+                labelString: "Điểm"
             },
-                        "id": "left",
-            "stacked": false,
-            "ticks": {
-                "beginAtZero": true
+            id: "left",
+            stacked: false,
+            ticks: {
+                beginAtZero: true
             }
             },
             /*
@@ -320,26 +313,107 @@
             */
         ]
         },
-        "title": {
-        "display": false
+        title: {
+          display: false
         },
-        "tooltips": {
-        "intersect": false,
-        "mode": "index",
-        "position": "nearest",
-        "callbacks": {}
+        tooltips: {
+          intersect: false,
+          mode: "index",
+          position: "nearest",
+          callbacks: {}
         }
     }
     var type = "line";
+     
+    // Doughnut chart
+
+    Chart.defaults.global.tooltips.custom = function(tooltip) {
+    // Tooltip Element
+    var tooltipEl = document.getElementById('doughnut-tooltip');
+
+    // Hide if no tooltip
+    if (tooltip.opacity === 0) {
+      tooltipEl.style.opacity = 0;
+      return;
+    }
+
+    // Set Text
+    if (tooltip.body) {
+      var total = 0;
+
+      // get the value of the datapoint
+      var value = this._data.datasets[tooltip.dataPoints[0].datasetIndex].data[tooltip.dataPoints[0].index].toLocaleString();
+
+      // calculate value of all datapoints
+    this._data.datasets[tooltip.dataPoints[0].datasetIndex].data.forEach(function(e) {
+        total += e;
+      });
+
+      // calculate percentage and set tooltip value
+      tooltipEl.innerHTML = '<h1>' + (value / total * 100) + '%</h1>';
+    }
+
+    // calculate position of tooltip
+    var centerX = (this._chartInstance.chartArea.left + this._chartInstance.chartArea.right) / 2;
+    var centerY = ((this._chartInstance.chartArea.top + this._chartInstance.chartArea.bottom) / 2);
+
+    // Display, position, and set styles for font
+    tooltipEl.style.opacity = 1;
+    tooltipEl.style.left = centerX + 'px';
+    tooltipEl.style.top = centerY + 'px';
+    tooltipEl.style.fontFamily = tooltip._fontFamily;
+    tooltipEl.style.fontSize = tooltip.fontSize;
+    tooltipEl.style.fontStyle = tooltip._fontStyle;
+    tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+  };
+
+  var doughnutConfig = {
+    type: 'doughnut',
+    data: {
+      datasets: [{
+        data: {{doughnut_data}},
+        backgroundColor: [
+          window.chartColors.green,
+          window.chartColors.yellow,
+          window.chartColors.red,
+          
+        ],
+      }],
+      labels: [
+        "Điểm từ 9 đến 10",
+        "Điểm từ 7 đến nhỏ hơn 9",
+        "Điểm nhỏ hơn 7",
+        
+      ]
+    },
+    options: {
+      responsive: true,
+      legend: {
+        position: 'bottom',
+        display: true,
+        labels: {
+          padding: 20
+        },
+      },
+      tooltips: {
+        enabled: true,
+      }
+    }
+  };
+
+
     window.onload = function() {
         window.myRadar = new Chart(document.getElementById("canvas"), config);
         window.myChart = new Chart(document.getElementById("lineChart").getContext('2d'), {options, data, type});
+        var ctx = document.getElementById("chart-area").getContext("2d");
+        window.myPie = new Chart(ctx, doughnutConfig);
     };
 //var myChart = new Chart(document.getElementById("myChart").getContext('2d'), {options, data, type});
 
   
-    </script>
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+
 
 <!-- Header -->
 <div id="fb-root"></div>
@@ -440,7 +514,7 @@
                 <div class="card-body">
                     <div class="row">
                        
-                        <div id="chartjs-radar" style="height: 100%;" >
+                        <div id="chartjs-radar" style="height: auto; width: 100%;">
                             <canvas id="canvas"></canvas>
                           </div>
                      
@@ -457,21 +531,30 @@
     <br>
     <div class="row">
         
-        <div class="col-lg-5">
+        <div class="col-lg-4">
             <div class="card shadow" style="height: 100%;">
                 <div class="card-header bg-transparent">
                     <div class="d-flex justify-content-between">
                     <h3 class="mb-0" style="font-weight: bold;">Biểu đồ phân bố điểm</h3>
                     </div>
                 </div>
-                
+                <div class="card-body">
+                  <div class="row">
+                      <div class="wrapper" style="height: auto; width: 100%;">
+                        <div >
+                          <canvas id="chart-area"></canvas>
+                        </div>
+                        
+                        <div id="doughnut-tooltip"></div>
+                      </div>
+                  </div>    
+                  
+              </div>    
             </div>
-
-            
 
         </div>
         
-        <div class="col-lg-7">
+        <div class="col-lg-8">
             <div class="card shadow" style="height: 100%;">
                 <div class="card-header bg-transparent">
                     <div class="d-flex justify-content-between">
@@ -480,9 +563,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                       
-                        
-                        <div class="wrapper" style="height: 300px; width: 100%;">
+                        <div class="wrapper" style="height: 400px; width: 100%;">
                         <canvas id="lineChart"></canvas>
                         </div>
                      
