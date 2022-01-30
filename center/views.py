@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, request
+from numpy import average
 #from matplotlib.style import context
 from .forms import *
 from django.contrib import messages
@@ -152,12 +153,55 @@ def get_classes(request):
 
 @login_required (login_url='/login')
 def get_students(request):
+    current_user = request.user
+    user_profile = UserProfile.objects.get(user = current_user)
     class_id=request.GET['class_id']
-    classid = Class.objects.filter(id=class_id)
-    student_list = Student.objects.filter(classid=classid[0])
+    classid = Class.objects.get(id=class_id)
+    student_list = Student.objects.filter(classid=classid)
+    good_average = 0
+    standard_average = 0
+    bad_average = 0
+    subjects = Subject.objects.all()
+    for student in student_list:
+        
+        results = Result.objects.filter(student=student)
+        total = 0
+        lenght = 0
+        average = 0
+        #score_array = []
+        #count = 0
+        for result in results:
+            #score_array.append(result.score)
+            total += result.score*result.testid.weight
+            lenght += result.testid.weight
+            '''
+            count +=1
+            if(count > max):
+                max = count
+                line_labels.append(max)
+            
+            '''
+
+        if (lenght>0):
+            average = total/lenght
+        if(average>= 9):
+            good_average += 1
+        if (7<=result.score <9):
+            standard_average += 1
+        if (result.score <7):
+            bad_average +=1
     #print(student_list[0].image)
+    context ={
+        'items': student_list,
+        'title':"Danh sách học sinh",
+        'user': current_user,
+        'userProfile': user_profile,
+        'studentNumber': len(student_list),
+        'class': classid,
+        'doughnut_data': [good_average,standard_average,bad_average]
+    }
     if student_list != None:
-        return render(request, 'student_list.html', {'items': student_list, 'title':"Danh sách học sinh"})
+        return render(request, 'student_list.html', context=context)
     else:
         return render(request, 'student_list.html', {'items': []})
 
