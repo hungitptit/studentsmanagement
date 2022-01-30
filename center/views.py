@@ -189,7 +189,7 @@ def get_students(request):
             average = total/lenght
         if(average>= 9):
             good_average += 1
-        elif (result.score <9 and result.score>=7):
+        elif (average <9 and average >=7):
             standard_average += 1
         else :
             bad_average +=1
