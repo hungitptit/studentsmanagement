@@ -275,6 +275,127 @@
     
     </div>
     <br>
+    <div class="row">
+       
+      <div class="col-lg-6">
+          <div class="card shadow" style="height: 100%;">
+              <div class="card-header bg-transparent">
+                  <div class="d-flex justify-content-between">
+                  <h3 class="mb-0" style="font-weight: bold;">Top 5 học sinh điểm cao nhất</h3>
+                  </div>
+              </div>
+              <div class="card-body">
+                  <div class="row">
+                    <table style="background-color:rgb(100, 92, 221)" class="table table-bordered" name = "kqPerson" >
+                      <tr style="color: seashell;">
+                      <th style="font-size: 18px;">Họ và tên </th>                       
+                      <th style="font-size: 18px;">Giới tính </th>
+                      <th style="font-size: 18px;">Điểm trung bình</th>
+
+                      </tr>
+                      {% for item in topBestStudent	%}
+                      {% if item.score >= 9 %}
+                      <tr style="color: seashell; background-color: rgb(75, 192, 192);">
+                      
+                      <td style="font-size: 18px; " >{{item.name}}</td>
+                      
+                      <td style="font-size: 18px;">{{item.gender}}</td>
+                      
+                      <td style="font-size: 18px;">{{item.score}}</td>
+                     
+                      {% elif item.score < 9 and item.score >= 7 %}
+                      <tr style="color: seashell; background-color: rgb(255, 205, 86);">
+                      
+                        <td style="font-size: 18px; " >{{item.name}}</td>
+                        
+                        <td style="font-size: 18px;">{{item.gender}}</td>
+                        
+                        <td style="font-size: 18px;">{{item.score}}</td
+                      
+                      {% else %}
+                      <tr style="color: seashell; background-color: rgb(255, 99, 132)">
+                      
+                        <td style="font-size: 18px; " >{{item.student.name}}</td>
+                        
+                        <td style="font-size: 18px;">{{item.gender}}</td>
+                        
+                        <td style="font-size: 18px;">{{item.score}}</td
+                      
+                      
+                      {% endif %}
+                      </tr>
+                      {% endfor %}		
+                  </table>
+                  </div>
+                  
+              </div>
+          </div>
+
+          
+
+      </div>
+      
+      <div class="col-lg-6">
+        <div class="card shadow" style="height: 100%;">
+          <div class="card-header bg-transparent">
+              <div class="d-flex justify-content-between">
+              <h3 class="mb-0" style="font-weight: bold;">Top 5 học sinh điểm thấp nhất</h3>
+              </div>
+          </div>
+          <div class="card-body">
+              <div class="row">
+                <table style="background-color:rgb(100, 92, 221)" class="table table-bordered" name = "kqPerson" >
+                  <tr style="color: seashell;">
+                  <th style="font-size: 18px;">Họ và tên </th>                       
+                  <th style="font-size: 18px;">Giới tính </th>
+                  <th style="font-size: 18px;">Điểm trung bình</th>
+
+                  </tr>
+                  {% for item in topWorstStudent	%}
+                  {% if item.score >= 9 %}
+                  <tr style="color: seashell; background-color: rgb(75, 192, 192);">
+                  
+                  <td style="font-size: 18px; " >{{item.name}}</td>
+                  
+                  <td style="font-size: 18px;">{{item.gender}}</td>
+                  
+                  <td style="font-size: 18px;">{{item.score}}</td>
+                 
+                  {% elif item.score < 9 and item.score >= 7 %}
+                  <tr style="color: seashell; background-color: rgb(255, 205, 86);">
+                  
+                    <td style="font-size: 18px; " >{{item.name}}</td>
+                    
+                    <td style="font-size: 18px;">{{item.gender}}</td>
+                    
+                    <td style="font-size: 18px;">{{item.score}}</td
+                  
+                  {% else %}
+                  <tr style="color: seashell; background-color: rgb(255, 99, 132)">
+                  
+                    <td style="font-size: 18px; " >{{item.student.name}}</td>
+                    
+                    <td style="font-size: 18px;">{{item.gender}}</td>
+                    
+                    <td style="font-size: 18px;">{{item.score}}</td
+                  
+                  
+                  {% endif %}
+                  </tr>
+                  {% endfor %}		
+              </table>
+              </div>
+              
+          </div>
+      </div>
+
+
+      </div>
+    
+
+  
+  </div>
+  <br>
     <div class="row" id="studentlist">
         <div class="col">
             <div class="card shadow">
