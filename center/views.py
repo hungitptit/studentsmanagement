@@ -189,9 +189,9 @@ def get_students(request):
             average = total/lenght
         if(average>= 9):
             good_average += 1
-        if (7<=result.score <9):
+        elif (result.score <9 and result.score>=7):
             standard_average += 1
-        if (result.score <7):
+        else :
             bad_average +=1
         student_map = {}
        
