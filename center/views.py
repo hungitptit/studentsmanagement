@@ -19,8 +19,9 @@ import json
 # Create your views here.
 @login_required(login_url='/login') # Check login
 def add_student(request):
+    current_user = request.user
     CLASS_CHOICES = []
-    classes = Class.objects.all()
+    classes = Class.objects.filter(user=current_user)
     for aclass in classes:
         CLASS_CHOICES.append((aclass.id,aclass.name))  
     if request.method == 'POST':
@@ -46,9 +47,9 @@ def add_student(request):
                 #return redirect('success')
         if form.is_valid():
             
-                if request.FILES['myfile']:
+                if request.FILES.get('myfile') :
                     one_student_classid = Class.objects.filter(id=form.cleaned_data['classid'])
-                    myfile = request.FILES['myfile']   
+                    myfile = request.FILES.get('myfile')  
                     #document = Document()  
                     #document.upload = myfile
                     
@@ -235,7 +236,22 @@ def show_student_detail(request):
 
 @login_required (login_url='/login')
 def scoring(request):
-    form = ScoringForm(request.POST, request.FILES)  
+    current_user= request.user
+    CLASS_CHOICES = []
+    TEST_CHOICES = []
+    SUBJECT_CHOICES = []
+    tests = Test.objects.all()
+    for atest in tests:
+        TEST_CHOICES.append((atest.id,atest.name))
+    classes = Class.objects.filter(user=current_user)
+    for aclass in classes:
+        CLASS_CHOICES.append((aclass.id,aclass.name))
+    subjects = Subject.objects.all()
+    for subject in subjects:
+        SUBJECT_CHOICES.append((subject.id,subject.name))
+    
+    form = ScoringForm(request.POST, request.FILES,CLASS_CHOICES = CLASS_CHOICES, TEST_CHOICES = TEST_CHOICES, SUBJECT_CHOICES = SUBJECT_CHOICES)  
+
     if request.method == 'POST':
       
         try:

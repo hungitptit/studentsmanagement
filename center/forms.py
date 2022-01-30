@@ -100,36 +100,36 @@ class UpdateStudentForm(forms.ModelForm):
         fields = ['name', 'gender', 'image', 'address', 'phone', 'description','dob']
 
 class ScoringForm(forms.Form):
-    CLASS_CHOICES = []
-    TEST_CHOICES = []
-    SUBJECT_CHOICES = []
-    tests = Test.objects.all()
-    for atest in tests:
-        TEST_CHOICES.append((atest.id,atest.name))
-    classes = Class.objects.all()
-    for aclass in classes:
-        CLASS_CHOICES.append((aclass.id,aclass.name))
-    subjects = Subject.objects.all()
-    for subject in subjects:
-        SUBJECT_CHOICES.append((subject.id,subject.name))
-    classid = forms.ChoiceField(
-        label="Tên lớp",
-        required=False,
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        choices=CLASS_CHOICES,
-    )
-    test = forms.ChoiceField(
-        label="Bài kiểm tra",
-        required=False,
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        choices=TEST_CHOICES,
-    )
-    subject = forms.ChoiceField(
-        label="Môn học",
-        required=False,
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        choices=SUBJECT_CHOICES,
-    )
+    def __init__(self, *args, **kwargs):
+        CLASS_CHOICES = kwargs.pop('CLASS_CHOICES', None)
+ 
+        TEST_CHOICES = kwargs.pop('TEST_CHOICES', None)
+        
+        SUBJECT_CHOICES = kwargs.pop('SUBJECT_CHOICES', None)
+        super(ScoringForm, self).__init__(*args, **kwargs)
+        self.fields['classid']=forms.ChoiceField(
+            label="Tên lớp",
+            required=False,
+            widget=forms.Select(attrs={'class': 'form-control'}),
+            choices=CLASS_CHOICES,
+        )
+        self.fields['subject']=forms.ChoiceField(
+            label="Môn học",
+            required=False,
+            widget=forms.Select(attrs={'class': 'form-control'}),
+            choices=SUBJECT_CHOICES,
+        )
+        self.fields['test']=forms.ChoiceField(
+            label="Bài kiểm tra",
+            required=False,
+            widget=forms.Select(attrs={'class': 'form-control'}),
+            choices=TEST_CHOICES,
+        )
+  
+
+    classid =forms.ChoiceField() 
+    test = forms.ChoiceField()
+    subject = forms.ChoiceField()
     
 class LoginForm(forms.Form):
     username = forms.CharField(
