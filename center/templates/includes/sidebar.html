@@ -18,13 +18,13 @@
           {% if user.is_authenticated %}
           <li class="nav-item {% if 'page-user' in segment %} active {% endif %}">
             <a class="nav-link" href="{% url 'upload' %}">
-              <i class="material-icons">content_paste</i>
+              <i class="material-icons">face</i>
               <p>Thêm học sinh</p>
             </a>
           </li>
           <li class="nav-item ">
             <a class="nav-link" href="{% url 'classes' %}" >
-              <i class="material-icons">search</i>
+              <i class="material-icons">school</i>
               <p>Danh sách lớp học
               </p>
             </a>
@@ -33,6 +33,13 @@
             <a class="nav-link" href="{% url 'scoring' %}" >
               <i class="material-icons">content_paste</i>
               <p>Nhập điểm
+              </p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="#" >
+              <i class="material-icons">settings</i>
+              <p>Cài đặt
               </p>
             </a>
           </li>
@@ -59,7 +66,9 @@
             </a>
           </li>
           {% endif %}
+          
           <!--li class="nav-item {% if 'ui-tables' in segment %} active {% endif %}">
+            https://fonts.google.com/icons?selected=Material+Icons
             <a class="nav-link" href="/ui-tables.html">
               <i class="material-icons">content_paste</i>
               <p>Table List</p>
