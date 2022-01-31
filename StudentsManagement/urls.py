@@ -34,7 +34,20 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('studentdetail', show_student_detail, name='studentdetail'),
     path('editstudent', edit_student, name='editstudent'),
-
+    path('settings', setting, name='settings'),
+    path('manageClasses', manage_class, name='manage_class'),
+    path('editclass', edit_class, name='editclass'),
+    path('addclass', add_class, name = 'add_class'),
+    path('deleteclass', delete_class, name = 'delete_class'),
+    path('managesubject', manage_subject, name='manage_subject'),
+    path('editsubject', edit_subject, name='editsubject'),
+    path('addsubject', add_subject, name = 'add_subject'),
+    path('deletesubject', delete_subject, name = 'delete_subject'),
+    path('managetestt', manage_test, name='manage_test'),
+    path('edittest', edit_test, name='editsubject'),
+    path('addtest', add_test, name = 'add_test'),
+    path('deletetest', delete_test, name = 'delete_test'),
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

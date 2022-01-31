@@ -58,20 +58,27 @@ class AddStudentForm(forms.Form):
         )
     classid =forms.ChoiceField()   
     
-         
-    
-    
+class AddClassForm(forms.Form):
+    name = forms.CharField( required=True, max_length=255, label="Tên lớp", widget=forms.TextInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'}))          
+
+class AddSubjectForm(forms.Form):
+    name = forms.CharField( required=True, max_length=255, label="Tên môn học", widget=forms.TextInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'})) 
+
+class AddTestForm(forms.Form):
+    name = forms.CharField( required=True, max_length=255, label="Tên loại bài kiểm tra", widget=forms.TextInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'})) 
+    weight = forms.IntegerField(required=True, label="Trọng số",widget=forms.NumberInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'}))
+
 class UpdateStudentForm(forms.ModelForm):
-    CLASS_CHOICES = []
-    classes = Class.objects.all()
-    for aclass in classes:
-        CLASS_CHOICES.append((aclass.id,aclass.name))
-    classid = forms.ChoiceField(
-        label="Tên lớp",
-        required=False,
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        choices=CLASS_CHOICES,
-    )
+    def __init__(self, *args, **kwargs):
+        CLASS_CHOICES = kwargs.pop('CLASS_CHOICES', None)
+        super(UpdateStudentForm, self).__init__(*args, **kwargs)
+        self.fields['classid']=forms.ChoiceField(
+            label="Tên lớp",
+            required=False,
+            widget=forms.Select(attrs={'class': 'form-control'}),
+            choices=CLASS_CHOICES,
+        )
+    classid =forms.ChoiceField() 
     name = forms.CharField( required=False, max_length=255, label="Tên", widget=forms.TextInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'}))
     gender = forms.ChoiceField(
         label="Giới tính",
@@ -98,6 +105,34 @@ class UpdateStudentForm(forms.ModelForm):
         model = Student
       
         fields = ['name', 'gender', 'image', 'address', 'phone', 'description','dob']
+
+class UpdateClassForm(forms.ModelForm):
+    
+    name = forms.CharField( required=False, max_length=255, label="Tên lớp", widget=forms.TextInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'}))
+    
+
+    class Meta:
+        model = Class
+      
+        fields = ['name']
+
+
+class UpdateSubjectForm(forms.ModelForm):
+    
+    name = forms.CharField( required=False, max_length=255, label="Tên môn học", widget=forms.TextInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'}))
+    class Meta:
+        model = Subject
+      
+        fields = ['name']
+
+class UpdateTestForm(forms.ModelForm):
+    
+    name = forms.CharField( required=False, max_length=255, label="Tên môn học", widget=forms.TextInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'}))
+    weight = forms.IntegerField(required=True, label="Trọng số",widget=forms.NumberInput(attrs={ 'style': 'width: 100%;', 'class': 'form-control'}))
+    class Meta:
+        model = Test
+      
+        fields = ['name', 'weight']
 
 class ScoringForm(forms.Form):
     def __init__(self, *args, **kwargs):

@@ -73,9 +73,9 @@ class Result(models.Model):
     semester = models.CharField(db_column='semester', blank=True, max_length=255, null=True)
     time = models.DateTimeField(db_column='time',blank=True, max_length=255, null=True,auto_now_add=True)
     score = models.FloatField(db_column='score',blank=True, max_length=255, null=True)
-    student = models.ForeignKey(Student,models.DO_NOTHING, db_column='StudentID')
-    subject = models.ForeignKey(Subject,models.DO_NOTHING, db_column='SubjectID')
-    testid = models.ForeignKey(Test,models.DO_NOTHING, db_column='TestID')
+    student = models.ForeignKey(Student,models.CASCADE, db_column='StudentID')
+    subject = models.ForeignKey(Subject,models.CASCADE, db_column='SubjectID')
+    testid = models.ForeignKey(Test,models.CASCADE, db_column='TestID')
     class Meta:
          
         db_table = 'Result'

@@ -1,0 +1,57 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Lớp học {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<!-- Header -->
+<!--div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+        </div>
+    </div>
+</div-->
+{% if messages %}
+{% for message in messages %}
+    <div class="alert alert-{{message.tags}}" role="alert">
+        {{ message }}
+    </div>
+{% endfor %}
+{% endif %} 
+<div class="container-fluid mt--7">
+
+    <div class="row">
+       
+        <div class="col-lg-12">
+            <div class="card shadow" style="height: 100%;">
+                <div class="card-header bg-transparent">
+                    <div class="d-flex justify-content-between">
+                    <h3 class="mb-0" style="font-weight: bold;">Cài đặt</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                   
+                    <a href="{% url 'manage_class' %}" style="font-size: 20px; font-weight: bold;">Cài đặt lớp học</a>
+                    <br>
+                    <br>
+                    <a href="{% url 'manage_subject' %}" style="font-size: 20px; font-weight: bold;">Cài đặt môn học</a>
+                    <br>
+                    <br>
+                    <a href="{% url 'manage_test' %}" style="font-size: 20px; font-weight: bold;">Cài đặt bài kiểm tra</a>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+   
+           
+</div>
+
+        {% endblock content %}
+
+        <!-- Specific JS goes HERE -->
+        {% block javascripts %}{% endblock javascripts %}

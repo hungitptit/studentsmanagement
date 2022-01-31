@@ -373,13 +373,17 @@ def logout_func(request):
 
 def edit_student(request):
     context ={}
- 
+    current_user = request.user
+    CLASS_CHOICES = []
+    classes = Class.objects.filter(user=current_user)
+    for aclass in classes:
+        CLASS_CHOICES.append((aclass.id,aclass.name))  
     # fetch the object related to passed id
     student_id=request.GET['student_id']
     student = Student.objects.filter(id=student_id)
  
     # pass the object as instance in form
-    form = UpdateStudentForm(request.POST or None, instance = student[0])
+    form = UpdateStudentForm(request.POST or None, instance = student[0],CLASS_CHOICES = CLASS_CHOICES)
  
     # save the data from the form and
     # redirect to detail_view
@@ -403,9 +407,190 @@ def edit_student(request):
             student.save()
         return HttpResponseRedirect('/studentdetail?student_id='+student_id)
         
-
- 
     # add form dictionary to context
     context["form"] = form
- 
+
     return render(request, "update_student.html", context)
+
+def setting(request):
+    return render(request,"settings.html")
+
+def manage_class(request):
+    current_user = request.user
+    class_list = Class.objects.filter(user = current_user)
+    context ={
+        'classes' : class_list,
+
+    }
+    return render(request, "manage_class.html", context)
+
+def add_class(request):
+    current_user = request.user
+     
+    if request.method == 'POST':
+        form = AddClassForm(request.POST)
+       
+        if (form.is_valid() ) :
+            classid = Class()
+            classid.user =current_user
+            classid.name = form.cleaned_data['name']
+            classid.save()
+            return HttpResponseRedirect('/manageClasses')
+    else:
+        form = AddClassForm()
+       
+    return render(request, 'add_object.html', {'form' : form})
+
+def edit_class(request):
+    context ={}
+ 
+    # fetch the object related to passed id
+    class_id=request.GET['class_id']
+    classid = Class.objects.get(id=class_id)
+ 
+    # pass the object as instance in form
+    form = UpdateClassForm(request.POST or None, instance = classid)
+ 
+    # save the data from the form and
+    # redirect to detail_view
+    if request.method == "POST":
+        if form.is_valid():
+            
+            classid = Class.objects.get(id=class_id)
+            classid.name = form.cleaned_data['name']
+            classid.save()
+        return HttpResponseRedirect('/manageClasses')
+        
+    # add form dictionary to context
+    context["form"] = form
+
+    return render(request, "update_student.html", context)
+
+def delete_class(request):
+
+    # fetch the object related to passed id
+    class_id=request.GET['class_id']
+    Class.objects.filter(id=class_id).delete()
+
+    return HttpResponseRedirect('/manageClasses')
+
+def manage_subject(request):
+    current_user = request.user
+    subject_list = Subject.objects.all()
+    context ={
+        'subjects' : subject_list,
+
+    }
+    return render(request, "manage_subject.html", context)
+
+def add_subject(request):
+    current_user = request.user
+     
+    if request.method == 'POST':
+        form = AddSubjectForm(request.POST)
+       
+        if (form.is_valid() ) :
+            subject = Subject()
+            subject.user =current_user
+            subject.name = form.cleaned_data['name']
+            subject.save()
+            return HttpResponseRedirect('/managesubject')
+    else:
+        form = AddSubjectForm()
+       
+    return render(request, 'add_object.html', {'form' : form})
+
+def edit_subject(request):
+    context ={}
+ 
+    # fetch the object related to passed id
+    subject_id=request.GET['subject_id']
+    subject = Subject.objects.get(id=subject_id)
+ 
+    # pass the object as instance in form
+    form = UpdateSubjectForm(request.POST or None, instance = subject)
+ 
+    # save the data from the form and
+    # redirect to detail_view
+    if request.method == "POST":
+        if form.is_valid():
+            
+            subject = Subject.objects.get(id=subject_id)
+            subject.name = form.cleaned_data['name']
+            subject.save()
+        return HttpResponseRedirect('/managesubject')
+        
+    # add form dictionary to context
+    context["form"] = form
+
+    return render(request, "update_student.html", context)
+
+def delete_subject(request):
+
+    # fetch the object related to passed id
+    subject_id=request.GET['subject_id']
+    Subject.objects.filter(id=subject_id).delete()
+
+    return HttpResponseRedirect('/managesubject')
+
+
+
+def manage_test(request):
+    current_user = request.user
+    test_list = Test.objects.all()
+    context ={
+        'tests' : test_list,
+
+    }
+    return render(request, "manage_test.html", context)
+
+def add_test(request):
+    current_user = request.user
+     
+    if request.method == 'POST':
+        form = AddTestForm(request.POST)
+       
+        if (form.is_valid() ) :
+            test = Test()
+            test.user =current_user
+            test.name = form.cleaned_data['name']
+            test.save()
+            return HttpResponseRedirect('/managetest')
+    else:
+        form = AddSubjectForm()
+       
+    return render(request, 'add_object.html', {'form' : form})
+
+def edit_test(request):
+    context ={}
+ 
+    # fetch the object related to passed id
+    test_id=request.GET['test_id']
+    test = Test.objects.get(id=test_id)
+ 
+    # pass the object as instance in form
+    form = UpdateTestForm(request.POST or None, instance = test)
+ 
+    # save the data from the form and
+    # redirect to detail_view
+    if request.method == "POST":
+        if form.is_valid():
+            
+            test = Test.objects.get(id=test_id)
+            test.name = form.cleaned_data['name']
+            test.weight = form.cleaned_data['weight']
+            test.save()
+        return HttpResponseRedirect('/managetest')
+        
+    # add form dictionary to context
+    context["form"] = form
+
+    return render(request, "update_student.html", context)
+
+def delete_test(request):
+
+    # fetch the object related to passed id
+    test_id=request.GET['subject_id']
+    Test.objects.filter(id=test_id).delete()
+
+    return HttpResponseRedirect('/managetest')
