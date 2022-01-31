@@ -13,8 +13,7 @@ import pandas as pd
 from django.core.files.storage import FileSystemStorage
 import datetime as dt
 #Simport os
-import operator
-import json
+##import json
 
 
 # Create your views here.
@@ -162,18 +161,19 @@ def get_students(request):
     standard_average = 0
     bad_average = 0
     subjects = Subject.objects.all()
-    
+    current_datetime = dt.datetime.now()
     top_student = []
+    birthday_in_month = []
     for student in student_list:
-       
+        
         results = Result.objects.filter(student=student)
         total = 0
         lenght = 0
         average = 0
         #score_array = []
         #count = 0
-        
-        for result in results:
+        improvement = 0
+        for i,result in enumerate(results):
             #score_array.append(result.score)
             total += result.score*result.testid.weight
             lenght += result.testid.weight
@@ -184,7 +184,8 @@ def get_students(request):
                 line_labels.append(max)
             
             '''
-
+            if (i>0):
+                improvement += (results[i].score-results[i-1].score)*(results[i].testid.weight/results[i-1].testid.weight)
         if (lenght>0):
             average = total/lenght
         if(average>= 9):
@@ -193,21 +194,29 @@ def get_students(request):
             standard_average += 1
         else :
             bad_average +=1
+        
         student_map = {}
        
         student_map['name'] = student.name
         #print(student_map['name'])
         student_map['gender'] = student.gender
         student_map['score'] = average
+        student_map['improvement'] = improvement
         top_student.append(student_map)
+        month = int(str(student.dob).split('-')[1])
+        if (month == current_datetime.month):
+            birthday_in_month.append(student)
+        #if student.dob = current_date:
+
     
     #top_student = sorted(top_student, key= lambda d: d['score'])
     top_best_student = sorted(top_student, key= lambda d: d['score'], reverse= True)[:5]
     top_worst_student = sorted(top_student, key= lambda d: d['score'])[:5]
     #top_best_student = sorted(top_best_student, key=operator.attrgetter('score'))[:5]
-    top_hard_working = []
+    top_hard_working = sorted(top_student, key= lambda d: d['improvement'], reverse= True)[:5]
     #print(student_list[0].image)
-
+      
+    
     context ={
         'items': student_list,
         'title':"Danh sách học sinh",
@@ -218,6 +227,8 @@ def get_students(request):
         'doughnut_data': [good_average,standard_average,bad_average],
         'topBestStudent':top_best_student,
         'topWorstStudent':top_worst_student,
+        'topHardWorking':top_hard_working,
+        'birthday':birthday_in_month
      
     }
     if student_list != None:
@@ -264,6 +275,7 @@ def show_student_detail(request):
                 standard_score += 1
             if (result.score <7):
                 bad_score +=1
+
 
         if (lenght>0):
             average = total/lenght
