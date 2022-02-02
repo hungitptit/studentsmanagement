@@ -199,8 +199,8 @@ def get_students(request):
         student_map['id'] = student.id
         student_map['name'] = student.name
         student_map['gender'] = student.gender
-        student_map['score'] = average
-        student_map['improvement'] = improvement
+        student_map['score'] = round (average,2)
+        student_map['improvement'] = round(improvement,3)
         top_student.append(student_map)
         month = int(str(student.dob).split('-')[1])
         if (month == current_datetime.month):
