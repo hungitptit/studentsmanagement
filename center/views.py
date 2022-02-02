@@ -196,9 +196,8 @@ def get_students(request):
             bad_average +=1
         
         student_map = {}
-       
+        student_map['id'] = student.id
         student_map['name'] = student.name
-        #print(student_map['name'])
         student_map['gender'] = student.gender
         student_map['score'] = average
         student_map['improvement'] = improvement
@@ -210,7 +209,7 @@ def get_students(request):
 
     
     #top_student = sorted(top_student, key= lambda d: d['score'])
-    top_best_student = sorted(top_student, key= lambda d: d['score'], reverse= True)[:5]
+    top_best_student = sorted(top_student, key= lambda d: d['score'], reverse= True)
     top_worst_student = sorted(top_student, key= lambda d: d['score'])[:5]
     #top_best_student = sorted(top_best_student, key=operator.attrgetter('score'))[:5]
     top_hard_working = sorted(top_student, key= lambda d: d['improvement'], reverse= True)[:5]
@@ -225,10 +224,11 @@ def get_students(request):
         'studentNumber': len(student_list),
         'class': classid,
         'doughnut_data': [good_average,standard_average,bad_average],
-        'topBestStudent':top_best_student,
+        'topBestStudent':top_best_student[:5],
         'topWorstStudent':top_worst_student,
         'topHardWorking':top_hard_working,
-        'birthday':birthday_in_month
+        'birthday':birthday_in_month,
+        'topStudent':top_best_student
      
     }
     if student_list != None:
