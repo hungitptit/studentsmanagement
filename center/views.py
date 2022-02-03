@@ -245,7 +245,20 @@ def show_student_detail(request):
     labels = []
     average_score = []
     line_dataset =[]
-    color = ['rgb(255, 99, 132)','rgb(54, 162, 235)','rgb(255, 159, 64)','rgb(75, 192, 192)','rgb(153, 102, 255)','rgb(255, 205, 86)','rgb(231,233,237)']
+    color = [
+        'rgb(255, 99, 132)', #red
+        'rgb(54, 162, 235)', #blue
+        'rgb(255, 159, 64)', #orange
+        'rgb(75, 192, 192)', #green
+        'rgb(153, 102, 255)', #purpil
+        'rgb(255, 205, 86)', #yellow
+        'rgb(231,233,237)', #grey
+        'rgb(97, 45, 45)', #brown
+        'rgb(139, 245, 86)', #lime
+        'rgb(86, 245, 213)', #light green
+        'rgb(0, 3, 82)', #ocean
+        'rgb(2, 71, 0)', #dark green 
+        ] 
     i = 0
     line_labels = []
     max = 0
