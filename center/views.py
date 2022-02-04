@@ -164,33 +164,51 @@ def get_students(request):
     current_datetime = dt.datetime.now()
     top_student = []
     birthday_in_month = []
+    subject_number = len(subjects)
+    #print(subject_number)
     for student in student_list:
         
-        results = Result.objects.filter(student=student)
-        total = 0
-        lenght = 0
-        average = 0
-        #score_array = []
-        #count = 0
-        improvement = 0
-        for i,result in enumerate(results):
-            #score_array.append(result.score)
-            total += result.score*result.testid.weight
-            lenght += result.testid.weight
-            '''
-            count +=1
-            if(count > max):
-                max = count
-                line_labels.append(max)
+        
+        total_average = 0
+        subject_improvement=[]
+        subject_average = []
+            #score_array = []
+            #count = 0
+        average_improvement = 0
+        for subject in subjects:
+            improvement = 0
+            lenght = 0
+            average = 0
+            total = 0
+        
+            results = Result.objects.filter(student=student, subject=subject)
             
-            '''
-            if (i>0):
-                improvement += (results[i].score-results[i-1].score)*(results[i].testid.weight/results[i-1].testid.weight)
-        if (lenght>0):
-            average = total/lenght
-        if(average>= 9):
+            for i,result in enumerate(results):
+                #score_array.append(result.score)
+                total += result.score*result.testid.weight
+                lenght += result.testid.weight
+                
+                '''
+                count +=1
+                if(count > max):
+                    max = count
+                    line_labels.append(max)
+                
+                '''
+                if (i>0):
+                    improvement += (results[i].score-results[i-1].score)*(results[i].testid.weight/results[i-1].testid.weight)
+            if (lenght>0):
+                average = total/lenght
+            total_average += average
+            average_improvement+=improvement
+        #subject_average.append(average)
+        
+        if (subject_number>0):
+            total_average /= subject_number
+            average_improvement /= subject_number
+        if(total_average>= 9):
             good_average += 1
-        elif (average <9 and average >=7):
+        elif (total_average <9 and average >=7):
             standard_average += 1
         else :
             bad_average +=1
@@ -199,8 +217,8 @@ def get_students(request):
         student_map['id'] = student.id
         student_map['name'] = student.name
         student_map['gender'] = student.gender
-        student_map['score'] = round (average,2)
-        student_map['improvement'] = round(improvement,3)
+        student_map['score'] = round (total_average,2)
+        student_map['improvement'] = round(average_improvement,3)
         top_student.append(student_map)
         month = int(str(student.dob).split('-')[1])
         if (month == current_datetime.month):

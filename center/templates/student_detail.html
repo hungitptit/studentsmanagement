@@ -419,7 +419,7 @@
 <!-- Header -->
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v11.0&appId=821058301783001&autoLogAppEvents=1" nonce="ernjqq4S"></script>
-
+<script src="https://sp.zalo.me/plugins/sdk.js"></script>
 
 <div class="container-fluid mt--7">
 
@@ -478,13 +478,23 @@
                             <br>
                             
                             <div class="row">
+                                
                                 <div  class="fb-share-button pull-left" data-width=""
                                     data-layout="button_count" data-size="large" 
                                     data-share="true">
                                 </div>
-                            </div>
-                           
+                                <div style="margin-left: 5px;" class="zalo-share-button"
+                                data-size="large" 
+                                data-oaid="579745863508352884" data-layout="3" data-color="blue" data-customize="false">
+                                 
+                               </div> 
+                                
+                          </div>
+                         
+                                  
                             
+                          
+                          
                             <div class="row">
                                 <div>
                                 <a href="/editstudent?student_id={{ student.id }}" class="btn btn-primary pull-left">Sửa thông tin</a>
