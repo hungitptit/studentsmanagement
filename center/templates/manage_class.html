@@ -68,7 +68,7 @@
                 
                 <td style="font-size: 18px; font-weight: bold; "><a href="/editclass?class_id={{item.id}}" class="btn btn-primary">Sửa</a></td>
                 <td style="font-size: 18px; font-weight: bold; "><a href="/deleteclass?class_id={{item.id}}" class="btn btn-danger" 
-                    onclick="return confirm('Bạn có chắc muốn xóa lớp học này? Tất cả học sinh trong lớp cũng sẽ bị xóa.')">Xóa</a></td>
+                    onclick="return confirm('Bạn có chắc muốn xóa lớp học {{item.name}}? Tất cả học sinh trong lớp cũng sẽ bị xóa.')">Xóa</a></td>
                 
                 </tr>
                 {% endfor %}		
