@@ -395,21 +395,18 @@ def scoring(request):
                             "Học sinh "+row['name']+ " bị trùng tên, xin vui lòng đặt lại tên để phân biệt, ví dụ " +row['name'] +" A, "+ row['name'] +" B"+ " ...") 
                         error = True
                         pass
-                    try:
-                        result = Result()
-                        result.student = student[0]
-                        result.subject = subject[0]
-                        result.testid = testid[0]
-                        result.score = row['score']
-                        #print(result.score)
-                        if(error is False):
-                            result.save()
-                        
-                    except:
-                        if(len(student) == 0):
-                            messages.error(request,
-                            "Học sinh "+row['name']+ " chưa có trong danh sách lớp")   
-                            error = True
+                    if(len(student) == 0):
+                        messages.error(request,
+                        "Học sinh "+row['name']+ " chưa có trong danh sách lớp")   
+                        error = True
+                    result = Result()
+                    result.student = student[0]
+                    result.subject = subject[0]
+                    result.testid = testid[0]
+                    result.score = row['score']
+                    #print(result.score)
+                    if(error is False):
+                        result.save()
                 if(error is False):        
                     messages.success(request,"Lưu thành công")
             else:
