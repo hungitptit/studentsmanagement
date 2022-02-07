@@ -68,7 +68,8 @@
                 <td style="font-size: 18px; font-weight: bold; ">{{item.name}}</td>
                 <td style="font-size: 18px; font-weight: bold; ">{{item.weight}}</td>
                 <td style="font-size: 18px; font-weight: bold; "><a href="/edittest?test_id={{item.id}}" class="btn btn-primary">Sửa</a></td>
-                <td style="font-size: 18px; font-weight: bold; "><a href="/deletetest?test_id={{item.id}}" class="btn btn-danger">Xóa</a></td>
+                <td style="font-size: 18px; font-weight: bold; "><a href="/deletetest?test_id={{item.id}}" class="btn btn-danger"
+                    onclick="return confirm('Bạn có chắc muốn xóa bài kiểm tra này? Tất cả thông tin về điểm của bài kiểm tra này cũng sẽ bị xóa.')">Xóa</a></td>
                 
                 </tr>
                 {% endfor %}		

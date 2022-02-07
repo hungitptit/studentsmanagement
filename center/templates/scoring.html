@@ -18,6 +18,7 @@
                 <div class="card-body">
                     {% if messages %}
                           {% for message in messages %}
+                        
                               <div class="alert alert-{{message.tags}}" role="alert">
                                   {{ message }}
                               </div>
@@ -52,7 +53,7 @@
                         <img src="static/assets/img/diem.png"></img>
                         <br>
                         <p style="color: red;">Lưu ý: tên của file excel cần đặt không dấu, không chứa các ký tự đặc biệt và khoảng trắng. Ví dụ: "diem.xlsx" là hợp lệ, "Điểm.xlsx" là KHÔNG hợp lệ</p>
-                        
+                        <a class="btn btn-primary" href="https://drive.google.com/uc?id=15-EizcFFDJZ4fvxiQSSHWptcD3gJQQuK&export=download">Tải file mẫu</a>
                         <h5>2. Chọn tên lớp, loại bài kiểm tra, môn học lần lượt trong các mục "Tên lớp", "Bài kiểm tra", "Môn học"</h5>
                         <h5>3. Click nút "Choose file" và chọn tải lên file excel đã chuẩn bị</h5>
                         <h5>4. Click nút "Nhập điểm" để lưu dữ liệu vào hệ thống</h5>

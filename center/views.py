@@ -81,7 +81,7 @@ def add_student(request):
                 
                     messages.success(request,"Lưu thành công")
             except:
-                messages.warning(request,"Có lỗi xảy ra, xin vui lòng kiểm tra lại file excel. Lưu ý đặt tên file không chứa dấu cách và ký tự đặc biệt, nội dung file đúng với format như ví dụ trong phần hướng dẫn sử dụng!")       
+                messages.error(request,"Có lỗi xảy ra, xin vui lòng kiểm tra lại file excel. Lưu ý đặt tên file không chứa dấu cách và ký tự đặc biệt, nội dung file đúng với format như ví dụ trong phần hướng dẫn sử dụng!")       
             
     else:
         form = AddStudentForm(CLASS_CHOICES=CLASS_CHOICES)
@@ -105,7 +105,7 @@ def login_form(request):
             messages.success(request,'Đăng nhập thành công với tài khoản '+str(current_user))
             return HttpResponseRedirect('/')
         else:
-            messages.warning(request,"Đăng nhập không thành công !! Sai tên đăng nhập hoặc mật khẩu")
+            messages.error(request,"Đăng nhập không thành công !! Sai tên đăng nhập hoặc mật khẩu")
             return HttpResponseRedirect('/login')
     # Return an 'invalid login' error message.
 
@@ -360,16 +360,17 @@ def scoring(request):
         SUBJECT_CHOICES.append((subject.id,subject.name))
     
     form = ScoringForm(request.POST, request.FILES,CLASS_CHOICES = CLASS_CHOICES, TEST_CHOICES = TEST_CHOICES, SUBJECT_CHOICES = SUBJECT_CHOICES)  
-
+    
     if request.method == 'POST':
       
         try:
+            error = False
             if form.is_valid() and request.FILES['myfile']:
                 classid = Class.objects.filter(id=form.cleaned_data['classid'])
                 testid = Test.objects.filter(id=form.cleaned_data['test'])
                 subject = Subject.objects.filter(id=form.cleaned_data['subject'])
                 myfile = request.FILES['myfile']
-                
+                students = Student.objects.filter(classid=classid[0])
                 fs = FileSystemStorage()
                 filename = fs.save(myfile.name, myfile)
                 uploaded_file_url = fs.url(filename)
@@ -379,15 +380,20 @@ def scoring(request):
                 dbframe =exceldata
                 #print(dbframe['Họ và tên'])
                 
-            
+                if len(dbframe)<len(students):
+                    messages.warning(request,
+                    mark_safe("Nhắc thầy/cô: Có vẻ như một vài học sinh chưa có điểm trong bài kiểm tra này ? <br/>"+ "Sĩ số lớp: " + str(len(students)) 
+                    +"<br/>Số học sinh trong danh sách điểm đã nhập: "+ str(len(dbframe)))
+                    )
                 for index,row in dbframe.iterrows():
                     #print(row['name'])
                     
                     student = Student.objects.filter(name=row['name'],classid=classid[0])
                     #print(len(student))
                     if(len(student) >1):
-                        messages.warning(request,
+                        messages.error(request,
                             "Học sinh "+row['name']+ " bị trùng tên, xin vui lòng đặt lại tên để phân biệt, ví dụ " +row['name'] +" A, "+ row['name'] +" B"+ " ...") 
+                        error = True
                         pass
                     try:
                         result = Result()
@@ -396,18 +402,21 @@ def scoring(request):
                         result.testid = testid[0]
                         result.score = row['score']
                         #print(result.score)
-                        result.save()
+                        if(error is False):
+                            result.save()
+                        
                     except:
                         if(len(student) == 0):
-                            messages.warning(request,
+                            messages.error(request,
                             "Học sinh "+row['name']+ " chưa có trong danh sách lớp")   
-                        
-                messages.success(request,"Lưu thành công")
+                            error = True
+                if(error is False):        
+                    messages.success(request,"Lưu thành công")
             else:
                 form = ScoringForm()
         except Exception as identifier:            
-            #print(identifier)
-            messages.warning(request,
+            print(identifier)
+            messages.error(request,
             "Có lỗi xảy ra, xin vui lòng kiểm tra lại file excel. Lưu ý đặt tên file không chứa dấu cách và ký tự đặc biệt, nội dung file đúng với format như ví dụ trong phần hướng dẫn sử dụng!")       
 
    
@@ -600,10 +609,11 @@ def add_test(request):
             test = Test()
             test.user =current_user
             test.name = form.cleaned_data['name']
+            test.weight = form.cleaned_data['weight']
             test.save()
             return HttpResponseRedirect('/managetest')
     else:
-        form = AddSubjectForm()
+        form = AddTestForm()
        
     return render(request, 'add_object.html', {'form' : form})
 
@@ -636,7 +646,7 @@ def edit_test(request):
 def delete_test(request):
 
     # fetch the object related to passed id
-    test_id=request.GET['subject_id']
+    test_id=request.GET['test_id']
     Test.objects.filter(id=test_id).delete()
 
     return HttpResponseRedirect('/managetest')
