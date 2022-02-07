@@ -46,7 +46,7 @@ def add_student(request):
                 #form.save()
                 #return redirect('success')
         if form.is_valid():
-            
+            try:
                 if request.FILES.get('myfile') :
                     one_student_classid = Class.objects.filter(id=form.cleaned_data['classid'])
                     myfile = request.FILES.get('myfile')  
@@ -57,6 +57,7 @@ def add_student(request):
                     #print(document.upload.url)
                     #messages.warning(request,document.upload.url)
                     fs = FileSystemStorage()
+                    
                     filename = fs.save(myfile.name, myfile)
                     uploaded_file_url = fs.url(filename)
                     excel_file = uploaded_file_url
@@ -79,7 +80,8 @@ def add_student(request):
                         
                 
                     messages.success(request,"Lưu thành công")
-                    
+            except:
+                messages.warning(request,"Có lỗi xảy ra, xin vui lòng kiểm tra lại file excel. Lưu ý đặt tên file không chứa dấu cách và ký tự đặc biệt, nội dung file đúng với format như ví dụ trong phần hướng dẫn sử dụng!")       
             
     else:
         form = AddStudentForm(CLASS_CHOICES=CLASS_CHOICES)
@@ -379,22 +381,35 @@ def scoring(request):
                 
             
                 for index,row in dbframe.iterrows():
-                    print(row['name'])
+                    #print(row['name'])
                     
                     student = Student.objects.filter(name=row['name'],classid=classid[0])
                     #print(len(student))
-                    result = Result()
-                    result.student = student[0]
-                    result.subject = subject[0]
-                    result.testid = testid[0]
-                    result.score = row['score']
-                    #print(result.score)
-                    result.save()
+                    if(len(student) >1):
+                        messages.warning(request,
+                            "Học sinh "+row['name']+ " bị trùng tên, xin vui lòng đặt lại tên để phân biệt, ví dụ " +row['name'] +" A, "+ row['name'] +" B"+ " ...") 
+                        pass
+                    try:
+                        result = Result()
+                        result.student = student[0]
+                        result.subject = subject[0]
+                        result.testid = testid[0]
+                        result.score = row['score']
+                        #print(result.score)
+                        result.save()
+                    except:
+                        if(len(student) == 0):
+                            messages.warning(request,
+                            "Học sinh "+row['name']+ " chưa có trong danh sách lớp")   
+                        
                 messages.success(request,"Lưu thành công")
             else:
                 form = ScoringForm()
         except Exception as identifier:            
-            print(identifier)
+            #print(identifier)
+            messages.warning(request,
+            "Có lỗi xảy ra, xin vui lòng kiểm tra lại file excel. Lưu ý đặt tên file không chứa dấu cách và ký tự đặc biệt, nội dung file đúng với format như ví dụ trong phần hướng dẫn sử dụng!")       
+
    
     return render(request, 'scoring.html', {'form' : form})
 def logout_func(request):
