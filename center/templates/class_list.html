@@ -27,8 +27,14 @@
         <div class="col">
             <div class="card shadow">
                 <div class="card-header bg-transparent">
-                    <h3 class="mb-0">{{title}}</h3>
+                
+                    <h3 class="mb-0">{{title}} <a title="Thêm lớp" class="nav-link pull-right" href="{% url 'add_class' %}" style="color: black; ">
+                        <i style="font-size: xx-large" class="material-icons">add_circle_outline</i>
+                        
+                      </a></h3>
+
                 </div>
+                <hr>
                 <div class="card-body">
                     
                     <div class="row">
@@ -50,10 +56,26 @@
                                 </div>
                               
                             </a>
+                            <hr>
+                            <a title="Xóa lớp học" class="nav-link pull-right" href="/deleteclass?class_id={{item.id}}" style="color: rgb(0, 0, 0);"
+                            onclick="return confirm('Bạn có chắc muốn xóa lớp học {{item.name}}? Tất cả học sinh trong lớp cũng sẽ bị xóa.')">
+                                <i class="material-icons">delete_outline</i>
+                                
+                              </a>  
+                            <a title="Sửa thông tin" class="nav-link pull-right" href="/editclass?class_id={{item.id}}" style="color: rgb(0, 0, 0);">
+                                <i class="material-icons">edit</i>
+                                
+                              </a>
+                             
+
                         </div>
+                        
                         {% endfor %}
+                        
                       
                     </div>
+                    
+                    
                 </div>
             </div>
 

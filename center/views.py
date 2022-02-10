@@ -487,7 +487,7 @@ def add_class(request):
             classid.user =current_user
             classid.name = form.cleaned_data['name']
             classid.save()
-            return HttpResponseRedirect('/manageClasses')
+            return HttpResponseRedirect('/classes')
     else:
         form = AddClassForm()
        
@@ -511,7 +511,7 @@ def edit_class(request):
             classid = Class.objects.get(id=class_id)
             classid.name = form.cleaned_data['name']
             classid.save()
-        return HttpResponseRedirect('/manageClasses')
+        return HttpResponseRedirect('/classes')
         
     # add form dictionary to context
     context["form"] = form
@@ -524,7 +524,7 @@ def delete_class(request):
     class_id=request.GET['class_id']
     Class.objects.filter(id=class_id).delete()
 
-    return HttpResponseRedirect('/manageClasses')
+    return HttpResponseRedirect('/classes')
 
 def manage_subject(request):
     current_user = request.user
