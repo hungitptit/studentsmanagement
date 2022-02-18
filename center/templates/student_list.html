@@ -61,7 +61,7 @@
         height: 10px;
         margin-right: 10px;
       }
-      #myInput {
+      #search {
         background-image: url('/static/assets/img/searchicon.png');
         background-position: 10px 10px;
         background-repeat: no-repeat;
@@ -475,6 +475,8 @@
                 <div class="card-header bg-transparent">
                     <h3 class="mb-0">{{title}}</h3>
                 </div>
+                <input type="text" id="search" onkeyup="searchByName()" placeholder="Tìm kiếm bằng tên học sinh ..." title="Nhập tên học sinh">
+                        
                 <div class="card-body">
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation" >
@@ -488,8 +490,7 @@
                     <div class="tab-pane fade show active" id="cel" role="tabpanel" aria-labelledby="cel-tab">
                       <br>
                       <div class="row" id="studentList">
-                        <input type="text" id="myInput" onkeyup="searchByName()" placeholder="Tìm kiếm bằng tên học sinh ..." title="Nhập tên học sinh">
-                        <br>
+                        
                         {% for item in items %}
                         <div id= "item" class="col-md-3 border px-3 py-3" style="cursor: pointer;">
                             
@@ -519,8 +520,8 @@
                     <div class="tab-pane fade " id="list" role="tabpanel" aria-labelledby="list-tab">
                       <br>
                       <div class="row">
-                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Tìm kiếm bằng tên học sinh ..." title="Nhập tên học sinh">
-                        <br>
+                        <!--input type="text" id="myInput" onkeyup="myFunction()" placeholder="Tìm kiếm bằng tên học sinh ..." title="Nhập tên học sinh">
+                        <br-->
                         <table id="myTable" style="background-color:rgb(100, 92, 221)" class="table table-bordered" name = "kqPerson" >
                           <tr style="color: seashell;">
                           <th style="font-size: 18px;">Họ và tên </th>                       
@@ -566,11 +567,13 @@
         <!-- Specific JS goes HERE -->
         {% block javascripts %}
         <script>
-          function myFunction() {
+          function searchByName() {
             var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput");
+            input = document.getElementById("search");
             filter = input.value.toUpperCase();
             table = document.getElementById("myTable");
+            list = document.getElementById("studentList");
+            item = list.getElementsByTagName("div");
             tr = table.getElementsByTagName("tr");
             for (i = 0; i < tr.length; i++) {
               td = tr[i].getElementsByTagName("td")[0];
@@ -583,13 +586,6 @@
                 }
               }       
             }
-          }
-          function searchByName() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            list = document.getElementById("studentList");
-            item = list.getElementsByTagName("div");
             for (i = 0; i < item.length; i++) {
               studentname = item[i].getElementsByTagName("div")[0];
               if (studentname) {
@@ -602,5 +598,6 @@
               }       
             }
           }
+         
   </script>
         {% endblock javascripts %}
