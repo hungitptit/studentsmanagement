@@ -61,7 +61,17 @@
         height: 10px;
         margin-right: 10px;
       }
-      
+      #myInput {
+        background-image: url('/static/assets/img/searchicon.png');
+        background-position: 10px 10px;
+        background-repeat: no-repeat;
+        background-size: 2%;
+        width: 100%;
+        font-size: 16px;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+      }
       </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
@@ -476,10 +486,12 @@
                   </ul>
                   <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="cel" role="tabpanel" aria-labelledby="cel-tab">
-                      <div class="row">
-                        
+                      <br>
+                      <div class="row" id="studentList">
+                        <input type="text" id="myInput" onkeyup="searchByName()" placeholder="Tìm kiếm bằng tên học sinh ..." title="Nhập tên học sinh">
+                        <br>
                         {% for item in items %}
-                        <div class="col-md-3 border px-3 py-3" style="cursor: pointer;">
+                        <div id= "item" class="col-md-3 border px-3 py-3" style="cursor: pointer;">
                             
                             <a href="/studentdetail?student_id={{ item.id }}">
                                 {% if item.image %}
@@ -490,7 +502,7 @@
                                 {% endif %}
                                 
                             
-                                <div class="d-flex flex-row justify-content-start">
+                                <div id= "name" class="d-flex flex-row justify-content-start">
                                     <h3>{{ item.name }}</h3>
                                 </div>
                                 <div class="d-flex flex-row justify-content-start">
@@ -505,9 +517,11 @@
                       </div>
                     </div>
                     <div class="tab-pane fade " id="list" role="tabpanel" aria-labelledby="list-tab">
+                      <br>
                       <div class="row">
-                        
-                        <table style="background-color:rgb(100, 92, 221)" class="table table-bordered" name = "kqPerson" >
+                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Tìm kiếm bằng tên học sinh ..." title="Nhập tên học sinh">
+                        <br>
+                        <table id="myTable" style="background-color:rgb(100, 92, 221)" class="table table-bordered" name = "kqPerson" >
                           <tr style="color: seashell;">
                           <th style="font-size: 18px;">Họ và tên </th>                       
                           <th style="font-size: 18px;">Giới tính </th>
@@ -548,6 +562,45 @@
         </div>
     </div>
         {% endblock content %}
-
+  
         <!-- Specific JS goes HERE -->
-        {% block javascripts %}{% endblock javascripts %}
+        {% block javascripts %}
+        <script>
+          function myFunction() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+              td = tr[i].getElementsByTagName("td")[0];
+              if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                  tr[i].style.display = "";
+                } else {
+                  tr[i].style.display = "none";
+                }
+              }       
+            }
+          }
+          function searchByName() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            list = document.getElementById("studentList");
+            item = list.getElementsByTagName("div");
+            for (i = 0; i < item.length; i++) {
+              studentname = item[i].getElementsByTagName("div")[0];
+              if (studentname) {
+                txtValue = studentname.textContent || studentname.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                  item[i].style.display = "";
+                } else {
+                  item[i].style.display = "none";
+                }
+              }       
+            }
+          }
+  </script>
+        {% endblock javascripts %}
