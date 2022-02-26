@@ -4,8 +4,8 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, request
-from numpy import average
-from torch import initial_seed
+
+
 #from matplotlib.style import context
 from .forms import *
 from django.contrib import messages
