@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, request
 from numpy import average
+from torch import initial_seed
 #from matplotlib.style import context
 from .forms import *
 from django.contrib import messages
@@ -172,8 +173,8 @@ def get_students(request):
         
         
         total_average = 0
-        subject_improvement=[]
-        subject_average = []
+        #subject_improvement=[]
+        #subject_average = []
             #score_array = []
             #count = 0
         average_improvement = 0
@@ -261,7 +262,7 @@ def show_student_detail(request):
     student_id=request.GET['student_id']
     student = Student.objects.get(id=student_id)
     subjects = Subject.objects.all()
-    
+    tests = Test.objects.all()
     labels = []
     average_score = []
     line_dataset =[]
@@ -285,16 +286,25 @@ def show_student_detail(request):
     good_score = 0
     standard_score = 0
     bad_score = 0
+    table_data = []
+    #table_subject = []
+    table_test = []
+    size={}
     for subject in subjects:
+        #table_subject.append(subject.name)
         line_dataMap = {}
+        table_dataMap = {}
         labels.append(subject.name)
         subject_results = Result.objects.filter(student=student,subject=subject)
         total = 0
         lenght = 0
         average = 0
         score_array = []
+        result_array = []
         count = 0
+        
         for result in subject_results:
+            result_array.append(result)
             score_array.append(result.score)
             total += result.score*result.testid.weight
             lenght += result.testid.weight
@@ -308,8 +318,11 @@ def show_student_detail(request):
                 standard_score += 1
             if (result.score <7):
                 bad_score +=1
-
-
+            
+            if (not result.testid.id in table_dataMap):
+                table_dataMap[result.testid.id] = []
+            table_dataMap[result.testid.id].append(result.score)
+          
         if (lenght>0):
             average = total/lenght
         average_score.append(average)
@@ -327,7 +340,26 @@ def show_student_detail(request):
         #line_dataMap["fill"]="false"
         #line_dataMap[""]
         line_dataset.append(line_dataMap)
+        table_dataMap['subject_name'] = subject.name
+        result_array = sorted(result_array, key= lambda d: d.testid.id)
+        table_dataMap['score'] = result_array 
+        table_data.append(table_dataMap)
+        for key in table_dataMap:
+            if not key in size:
+                size[key]= 0
+            if size[key] < len(table_dataMap[key]):
+                size[key]= len(table_dataMap[key])
     #print(line_dataset)
+   # print(table_data)
+    #print (size)
+    
+    for test in tests:
+        table_testMap ={}
+        if test.id in size:
+            table_testMap['size'] = size[test.id]
+        table_testMap['test']= test
+        table_test.append(table_testMap)
+   
     context = {
         'student': student, 
         'title':"Danh sách học sinh",
@@ -335,7 +367,9 @@ def show_student_detail(request):
         'average_score':average_score,
         'dataset':line_dataset,
         'lineLabels':line_labels,
-        'doughnut_data': [good_score,standard_score,bad_score]
+        'doughnut_data': [good_score,standard_score,bad_score],
+        'table_data': table_data,
+        'table_test': table_test
         }
     
     if student != None:
@@ -433,9 +467,8 @@ def edit_student(request):
     # fetch the object related to passed id
     student_id=request.GET['student_id']
     student = Student.objects.filter(id=student_id)
- 
     # pass the object as instance in form
-    form = UpdateStudentForm(request.POST or None, instance = student[0],CLASS_CHOICES = CLASS_CHOICES)
+    form = UpdateStudentForm(request.POST or None, instance = student[0],CLASS_CHOICES = CLASS_CHOICES, initial={'classid':student[0].classid.id})
  
     # save the data from the form and
     # redirect to detail_view

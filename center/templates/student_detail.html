@@ -585,9 +585,93 @@
         </div>
         
     </div>
+    <br>
+    <div class="row">
+      <div class="col-lg-12">
+          <div class="card shadow" style="height: 100%;">
+              <div class="card-header bg-transparent">
+                  <div class="d-flex justify-content-between">
+                  <h3 class="mb-0" style="font-weight: bold;">Bảng điểm</h3>
+                  </div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <table style="background-color:rgb(100, 92, 221); border-collapse: collapse;" class="table table-bordered" name = "kqPerson">
+                    <thead>
+                      <tr style="color: seashell;">
+                        <th></th>
+                        {% for item in table_test %}
+                        <th style="font-size: 18px; font-weight: bold;" colspan={{item.size}}>{{item.test.name}}</th>
+                        {% endfor %}
+                      </tr>
+                    </thead>
+                      
+                    <tbody>
+                      {% for item in table_data %}
+                        <tr style="color: seashell;">
+                          <th style="font-size: 18px; font-weight: bold;" >{{item.subject_name}}</th>
+                          
+                            <!--td style="background-color:rgb(255, 255, 255)">
+                              <table style="background-color:rgb(100, 92, 221);  margin: 0;" -->
+                                
+                               
+                                {% for result in item.score %}
+                                  {% if result.score >= 9 %}
+                                    <td style="color: seashell; background-color: rgb(75, 192, 192); font-size: 18px; font-weight: bold;">
+                                    {% elif result.score < 9 and result.score >= 7 %}
+                                      <td style="color: seashell; background-color: rgb(255, 205, 86); font-size: 18px; font-weight: bold;">
+                                    {% else %}
+                                        <td style="color: seashell; background-color: rgb(255, 99, 132); font-size: 18px; font-weight: bold;">
+                                    {% endif %}
+                                  {{result.score}}</td>
+                                {% endfor %}
+                                
+                              <!--/table>
+                              
+                            </td-->
+                            
+                          
+                        </tr>
+                      {% endfor %}
+                      
+                      
+                    </tbody>
+                  </table>
+                </div>    
+                
+              </div>    
+          </div>
+
+      </div>
+    </div> 
 </div>
 {% endblock content %}
         <!-- Specific JS goes HERE -->
 {% block javascripts %}
-
+<script>
+  
+  $(function() {
+  
+      jQuery.fn.exists = function(){return this.length>0;}
+      
+      // Dynamic Colspan
+      if($('[colspan="auto1"]').exists())
+      {
+          $.each($('[colspan="auto1"]'), function( index, value ) {
+              var table = $(this).closest('table');    // Get Table
+              var siblings = $(this).closest('tr').find('th:visible, td:visible').not('[colspan="auto1"]').length; // Count colspan siblings
+              var numCols = table.find('tr').first().find('th:visible, td:visible').length; // Count visible columns
+              
+              $(this).attr('colspan', 3); // Update colspan attribute
+          });
+          $.each($('[colspan="auto2"]'), function( index, value ) {
+              var table = $(this).closest('table');    // Get Table
+              var siblings = $(this).closest('tr').find('th:visible, td:visible').not('[colspan="auto2"]').length; // Count colspan siblings
+              var numCols = table.find('tr').first().find('th:visible, td:visible').length; // Count visible columns
+              $(this).attr('colspan',2); // Update colspan attribute
+          });
+      }
+  
+  })
+  </script>
 {% endblock javascripts %}
