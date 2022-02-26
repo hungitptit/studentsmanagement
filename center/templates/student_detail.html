@@ -617,11 +617,11 @@
                                
                                 {% for result in item.score %}
                                   {% if result.score >= 9 %}
-                                    <td style="color: seashell; background-color: rgb(75, 192, 192); font-size: 18px; font-weight: bold;">
+                                    <td style="text-align: center; color: seashell; background-color: rgb(75, 192, 192); font-size: 18px; font-weight: bold;">
                                     {% elif result.score < 9 and result.score >= 7 %}
-                                      <td style="color: seashell; background-color: rgb(255, 205, 86); font-size: 18px; font-weight: bold;">
+                                      <td style="text-align: center; color: seashell; background-color: rgb(255, 205, 86); font-size: 18px; font-weight: bold;">
                                     {% else %}
-                                        <td style="color: seashell; background-color: rgb(255, 99, 132); font-size: 18px; font-weight: bold;">
+                                        <td style="text-align: center; color: seashell; background-color: rgb(255, 99, 132); font-size: 18px; font-weight: bold;">
                                     {% endif %}
                                   {{result.score}}</td>
                                 {% endfor %}
