@@ -1,12 +1,12 @@
-from os import name
+from django.utils.dateparse import parse_date
+#import math
+#from os import name
 #from turtle import color
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, request
-
-
-#from matplotlib.style import context
+from datetime import datetime 
 from .forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -15,7 +15,6 @@ from django.core.files.storage import FileSystemStorage
 import datetime as dt
 #Simport os
 ##import json
-
 
 # Create your views here.
 @login_required(login_url='/login') # Check login
@@ -69,14 +68,28 @@ def add_student(request):
                     #print(dbframe)
                     
                     for index,row in dbframe.iterrows():
-                        
                         student = Student()
                         student.classid = one_student_classid[0]
                         student.name = row['name']
                         student.gender = row['gender']
                         student.address = row['address']
                         student.phone = row['phone']
-                        student.dob = row['dob']
+                        print (row['dob'] )
+                        print (type(row['dob']) )
+                        try:
+                            for fmt in ('%d-%m-%Y', '%d.%m.%Y', '%d/%m/%Y'):
+                                try:
+                                    student.dob = datetime.strptime(row['dob'],fmt)
+                                except ValueError:
+                                    pass   
+
+                        except:
+                            student.dob = row['dob']  
+                            #print(type(student.dob))
+                            if not type(student.dob) is pd._libs.tslibs.timestamps.Timestamp:
+                                student.dob = datetime.now()
+                                messages.warning(request,"Học sinh " + row['name'] + " chưa có thông tin về ngày sinh hoặc ngày sinh chưa đúng định dạng, ngày sinh sẽ được đặt mặc định là ngày hôm nay.")
+                            
                         student.save()
                         
                 

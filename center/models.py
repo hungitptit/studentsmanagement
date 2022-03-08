@@ -5,8 +5,8 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove ` ` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
-from cgi import test
-from email.policy import default
+
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
@@ -48,7 +48,7 @@ class Student(models.Model):
     image = models.ImageField(db_column='image', null=True, upload_to='student')
     description = models.CharField(db_column='description', blank=True, max_length=2550, null=True)
     phone = models.CharField(db_column='phone', blank=True, max_length=255, null=True)
-    dob = models.DateTimeField(db_column='dob',blank=True, max_length=255, null=True)
+    dob = models.DateTimeField(db_column='dob',blank=True, max_length=255, null=True, default=datetime.now())
     class Meta:
          
         db_table = 'Student'
