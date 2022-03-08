@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, request
-
+from matplotlib.style import context
 
 #from matplotlib.style import context
 from .forms import *
@@ -523,8 +523,8 @@ def add_class(request):
             return HttpResponseRedirect('/classes')
     else:
         form = AddClassForm()
-       
-    return render(request, 'add_object.html', {'form' : form})
+    context = {'form' : form, 'title': 'Thêm lớp học'}
+    return render(request, 'add_object.html', context )
 
 def edit_class(request):
     context ={}
@@ -582,8 +582,8 @@ def add_subject(request):
             return HttpResponseRedirect('/managesubject')
     else:
         form = AddSubjectForm()
-       
-    return render(request, 'add_object.html', {'form' : form})
+    context = {'form' : form, 'title': 'Thêm môn học'}    
+    return render(request, 'add_object.html', context)
 
 def edit_subject(request):
     context ={}
@@ -644,8 +644,8 @@ def add_test(request):
             return HttpResponseRedirect('/managetest')
     else:
         form = AddTestForm()
-       
-    return render(request, 'add_object.html', {'form' : form})
+    context = {'form' : form, 'title': 'Thêm lớp học'}   
+    return render(request, 'add_object.html', context)
 
 def edit_test(request):
     context ={}
