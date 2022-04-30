@@ -420,12 +420,42 @@
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v11.0&appId=821058301783001&autoLogAppEvents=1" nonce="ernjqq4S"></script>
 <script src="https://sp.zalo.me/plugins/sdk.js"></script>
+<style>
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .img-thumbnail {
+    width: 100%;
+    height: auto;
+  
+  }
+  h2 {
+    font-size: large;
+    
+  }
+  h3{
+    font-size: large;
+  }
+  h4{
+    font-size: small;
+  }
+  .btn {
+    font-size: small;
+  }
+  table tr,
+  table th {
+    font-size: 1em;
+  }
+  [class*="col-"] {
+    margin-bottom: 2em;
+  }
+}
+</style>
 
 <div class="container-fluid mt--7">
 
     <div class="row">
        
-        <div class="col-lg-7">
+        <div class="col-12 col-lg-7">
             <div class="card shadow" style="height: 100%;">
                 <div class="card-header bg-transparent">
                     <div class="d-flex justify-content-between">
@@ -434,16 +464,16 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-5 item-photo">
+                        <div class="col-5 col-lg-5 item-photo">
                             {% if student.image %}
                             <img src="{{student.image.url}}" style="height: auto; width: 100%;"class="img-thumbnail" alt="">
                             {% else %}
-                                <img style="height: auto; width: 100%;" src="/static/assets/img/student.png" class="img-thumbnail" alt="">
+                                <img  src="/static/assets/img/student.png" class="img-thumbnail" alt="">
                             {% endif %}
                             
                         </div>
-                        <div class="col-lg-7">
-                            <h2 id="product-name" style="font-weight: bold; color: navy;">{{ student.name }}</h1>
+                        <div class="col-7 col-lg-7">
+                            <h2  style="font-weight: bold; color: navy;">{{ student.name }}</h2>
                                 <br>
                                    
                                         <h4 style="font-weight: bold;">Giới tính: </h4> 
@@ -513,8 +543,8 @@
             
 
         </div>
-        
-        <div class="col-lg-5">
+      
+        <div class="col-12 col-lg-5">
             <div class="card shadow" style="height: 100%;">
                 <div class="card-header bg-transparent">
                     <div class="d-flex justify-content-between">
@@ -595,7 +625,7 @@
                   </div>
               </div>
               <div class="card-body">
-                <div class="row">
+                <div class="row" style="overflow-x:auto;">
                   <table style="background-color:rgb(100, 92, 221); border-collapse: collapse;" class="table table-bordered" name = "kqPerson">
                     <thead>
                       <tr style="color: seashell;">

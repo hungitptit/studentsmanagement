@@ -22,6 +22,18 @@
 {% endfor %}
 {% endif %} 
 <style>
+  .img-thumbnail {
+    height: 300px; 
+    width: auto;
+  }
+  td{
+    font-size: 18px; 
+    font-weight: bold;
+  }
+  th{
+    font-size: 18px;
+  }  
+  
     #canvas-holder {
       width: 100%;
       margin-top: 50px;
@@ -72,6 +84,54 @@
         border: 1px solid #ddd;
         margin-bottom: 12px;
       }
+  @media only screen and (max-width: 768px) {
+  .img-thumbnail {
+    width: 100%;
+    height: auto;
+  
+  }
+  td{
+    font-size: medium; 
+    
+  }
+  th{
+    font-size: medium;
+  }  
+  h2 {
+    font-size: large;
+    
+  }
+  h3{
+    font-size: large;
+  }
+  h4{
+    font-size: small;
+  }
+  h5{
+    font-size: small;
+  }
+  .btn {
+    font-size: small;
+  }
+  table tr,
+  table th {
+    font-size: 1em;
+  }
+  [class*="col-"] {
+    margin-bottom: 2em;
+  }
+  #search {
+        background-image: url('/static/assets/img/searchicon.png');
+        background-position: 10px 10px;
+        background-repeat: no-repeat;
+        background-size: 7%;
+        width: 100%;
+        font-size: 16px;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+      }
+}
       </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
@@ -189,7 +249,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-5 item-photo">
+                        <div class="col-5 col-lg-5 item-photo">
                             {% if class.image %}
                             <img src="{{class.image.url}}" style="height: auto; width: 100%;"class="img-thumbnail" alt="">
                             {% else %}
@@ -197,10 +257,7 @@
                             {% endif %}
                             
                         </div>
-                        <div class="col-lg-7">
-                            <h2 id="product-name" style="font-weight: bold; color: navy;">{{ student.name }}</h1>
-                                <br>
-                                   
+                        <div class="col-7 col-lg-7">       
                                     
                                         <h4 style="font-weight: bold;">Tên lớp: </h4> 
                                         <div > 
@@ -298,9 +355,9 @@
                   <div class="row">
                     <table style="background-color:rgb(100, 92, 221)" class="table table-bordered" name = "kqPerson" >
                       <tr style="color: seashell;">
-                      <th style="font-size: 18px;">Họ và tên </th>                       
-                      <th style="font-size: 18px;">Giới tính </th>
-                      <th style="font-size: 18px;">Điểm trung bình</th>
+                      <th >Họ và tên </th>                       
+                      <th >Giới tính </th>
+                      <th >Điểm trung bình</th>
 
                       </tr>
                       {% for item in topBestStudent	%}
@@ -311,11 +368,11 @@
                       {% else %}
                           <tr style="color: seashell; background-color: rgb(255, 99, 132)">
                       {% endif %}
-                      <td style="font-size: 18px; font-weight: bold;" >{{item.name}}</td>
+                      <td >{{item.name}}</td>
                       
-                      <td style="font-size: 18px; font-weight: bold;">{{item.gender}}</td>
+                      <td >{{item.gender}}</td>
                       
-                      <td style="font-size: 18px; font-weight: bold;">{{item.score}}</td>
+                      <td >{{item.score}}</td>
  
                       
                       
@@ -342,9 +399,9 @@
               <div class="row">
                 <table style="background-color:rgb(100, 92, 221)" class="table table-bordered" name = "kqPerson" >
                   <tr style="color: seashell;">
-                  <th style="font-size: 18px;">Họ và tên </th>                       
-                  <th style="font-size: 18px;">Giới tính </th>
-                  <th style="font-size: 18px;">Điểm trung bình</th>
+                  <th>Họ và tên </th>                       
+                  <th >Giới tính </th>
+                  <th >Điểm trung bình</th>
 
                   </tr>
                   {% for item in topWorstStudent	%}
@@ -355,11 +412,11 @@
                   {% else %}
                     <tr style="color: seashell; background-color: rgb(255, 99, 132)">
                   {% endif %}
-                  <td style="font-size: 18px; font-weight: bold;" >{{item.name}}</td>
+                  <td>{{item.name}}</td>
                   
-                  <td style="font-size: 18px; font-weight: bold;">{{item.gender}}</td>
+                  <td>{{item.gender}}</td>
                   
-                  <td style="font-size: 18px; font-weight: bold;">{{item.score}}</td>
+                  <td>{{item.score}}</td>
                
                   
                   </tr>
@@ -390,9 +447,9 @@
                 <div class="row">
                   <table style="background-color:rgb(100, 92, 221)" class="table table-bordered" name = "kqPerson" >
                     <tr style="color: seashell;">
-                    <th style="font-size: 18px;">Họ và tên </th>                       
-                    <th style="font-size: 18px;">Giới tính </th>
-                    <th style="font-size: 18px;">Điểm tiến bộ</th>
+                    <th >Họ và tên </th>                       
+                    <th >Giới tính </th>
+                    <th >Điểm tiến bộ</th>
 
                     </tr>
                     {% for item in topHardWorking	%}
@@ -403,11 +460,11 @@
                     {% else %}
                         <tr style="color: seashell; background-color: rgb(255, 99, 132)">
                     {% endif %}
-                    <td style="font-size: 18px; font-weight: bold;" >{{item.name}}</td>
+                    <td >{{item.name}}</td>
                     
-                    <td style="font-size: 18px; font-weight: bold;">{{item.gender}}</td>
+                    <td >{{item.gender}}</td>
                     
-                    <td style="font-size: 18px; font-weight: bold;">{{item.improvement}}</td>
+                    <td >{{item.improvement}}</td>
 
                     
                     
@@ -434,9 +491,9 @@
             <div class="row">
               <table style="background-color:rgb(100, 92, 221)" class="table table-bordered" name = "kqPerson" >
                 <tr style="color: seashell;">
-                <th style="font-size: 18px;">Họ và tên </th>                       
-                <th style="font-size: 18px;">Giới tính </th>
-                <th style="font-size: 18px;">Ngày sinh</th>
+                <th >Họ và tên </th>                       
+                <th >Giới tính </th>
+                <th >Ngày sinh</th>
 
                 </tr>
                 {% for item in birthday	%}
@@ -444,11 +501,11 @@
                 
                 <tr style="color: seashell; background-color: rgb(54, 162, 235)">
                 
-                <td style="font-size: 18px; font-weight: bold;" >{{item.name}}</td>
+                <td>{{item.name}}</td>
                 
-                <td style="font-size: 18px; font-weight: bold;">{{item.gender}}</td>
+                <td>{{item.gender}}</td>
                 
-                <td style="font-size: 18px; font-weight: bold;">{{item.dob|date:"d/m/Y"}}</td>
+                <td>{{item.dob|date:"d/m/Y"}}</td>
              
                 
                 </tr>
@@ -473,7 +530,7 @@
             <div class="card shadow">
               
                 <div class="card-header bg-transparent">
-                    <h3 class="mb-0">{{title}}</h3>
+                    <h3 class="mb-0" style="font-weight: bold;">{{title}}</h3>
                 </div>
                 <input type="text" id="search" onkeyup="searchByName()" placeholder="Tìm kiếm bằng tên học sinh ..." title="Nhập tên học sinh">
                         
@@ -492,14 +549,14 @@
                       <div class="row" id="studentList">
                         
                         {% for item in items %}
-                        <div id= "item" class="col-md-3 border px-3 py-3" style="cursor: pointer;">
+                        <div id= "item" class="col-4 col-md-3 border px-3 py-3" style="cursor: pointer;">
                             
                             <a href="/studentdetail?student_id={{ item.id }}">
                                 {% if item.image %}
-                                    <img style="height: 300px; width: auto;" src="{{item.image.url}}" class="img-thumbnail" alt="">
+                                    <img src="{{item.image.url}}" class="img-thumbnail" alt="">
                                
                                 {% else %}
-                                <img style="height: 300px; width: auto;" src="/static/assets/img/student.png" class="img-thumbnail" alt="">
+                                <img  src="/static/assets/img/student.png" class="img-thumbnail" alt="">
                                 {% endif %}
                                 
                             
@@ -524,9 +581,9 @@
                         <br-->
                         <table id="myTable" style="background-color:rgb(100, 92, 221)" class="table table-bordered" name = "kqPerson" >
                           <tr style="color: seashell;">
-                          <th style="font-size: 18px;">Họ và tên </th>                       
-                          <th style="font-size: 18px;">Giới tính </th>
-                          <th style="font-size: 18px;">Điểm trung bình</th>
+                          <th >Họ và tên </th>                       
+                          <th >Giới tính </th>
+                          <th >Điểm trung bình</th>
         
                           </tr>
 
@@ -541,11 +598,11 @@
                           {% endif %}
                           
 
-                          <td style="font-size: 18px; font-weight: bold;" ><a href="/studentdetail?student_id={{ item.id }}" style="color: white;">{{item.name}}</a></td>
+                          <td ><a href="/studentdetail?student_id={{ item.id }}" style="color: white;">{{item.name}}</a></td>
                           
-                          <td style="font-size: 18px; font-weight: bold;">{{item.gender}}</td>
+                          <td >{{item.gender}}</td>
                           
-                          <td style="font-size: 18px; font-weight: bold;">{{item.score}}</td>
+                          <td>{{item.score}}</td>
  
                           </tr>
                         </a>
