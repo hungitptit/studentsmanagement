@@ -8791,7 +8791,7 @@ a.text-dark:focus {
   color: #fff;
   background-color: #007858;
   border-color: #007858;
-  box-shadow: 0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(0, 120, 88, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(26, 134, 105, 0.2);
 }
 
 .btn.btn-primary:hover {
@@ -8815,7 +8815,7 @@ a.text-dark:focus {
   color: #fff;
   background-color: #1a8669;
   border-color: #006c4f;
-  box-shadow: 0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(0, 120, 88, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(26, 134, 105, 0.2);
 }
 
 .btn.btn-primary:active:hover,
@@ -16778,7 +16778,7 @@ label {
 .card.bg-primary,
 .card.card-rotate.bg-primary .front,
 .card.card-rotate.bg-primary .back {
-  background: linear-gradient(60deg, #ab47bc, #8e24aa);
+  background: #1c846c;
 }
 
 .card .card-header-info .card-icon,
@@ -16787,7 +16787,7 @@ label {
 .card.bg-info,
 .card.card-rotate.bg-info .front,
 .card.card-rotate.bg-info .back {
-  background: linear-gradient(60deg, #26c6da, #00acc1);
+  background: #1c846c;
 }
 
 .card .card-header-success .card-icon,
